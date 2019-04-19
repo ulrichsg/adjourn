@@ -21,7 +21,6 @@ export interface ToggleCollapsed {
 }
 
 export function toggleCollapsed(questId: string): ToggleCollapsed {
-  console.log('toggleCollapsed', questId);
   return {
     type: ActionType.TOGGLE_COLLAPSED,
     questId,

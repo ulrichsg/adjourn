@@ -14,13 +14,14 @@ const QuestNotes = styled.div`
 `;
 
 interface Props {
-  quest: Quest;
+  readonly quest: Quest;
+  readonly edit: (quest: Quest) => void;
 }
 
 interface State {
-  editing: boolean;
-  title: string;
-  notes: string;
+  readonly editing: boolean;
+  readonly title: string;
+  readonly notes: string;
 }
 
 export default class QuestCard extends React.Component<Props, State> {
@@ -32,7 +33,7 @@ export default class QuestCard extends React.Component<Props, State> {
     const quest = this.props.quest;
     return (
       <QuestContainer>
-        <QuestHeader quest={quest}/>
+        <QuestHeader quest={quest} edit={this.props.edit}/>
         {quest.collapsed ? '' : <QuestNotes>{quest.notes}</QuestNotes>}
       </QuestContainer>
     );

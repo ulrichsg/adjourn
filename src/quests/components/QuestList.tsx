@@ -1,11 +1,12 @@
 import { Button, Icon, Tooltip } from 'antd';
-import produce, { Draft } from 'immer';
+import produce from 'immer';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Quest from '../quest';
 import { State } from '../QuestReducer';
 import AddQuestModal from './AddQuestModal';
+import EditQuestModal from './EditQuestModal';
 import QuestCard from './QuestCard';
 
 const ListHeader = styled.div`
@@ -19,7 +20,6 @@ const ListActions = styled.div`
   margin-left: auto;
 `;
 
-// 5CB85C
 const AddQuestButton = styled(Button)`
   &, &:focus {
     background-color: #43a047;
@@ -38,7 +38,7 @@ interface Props {
 interface OwnState {
   readonly adding: boolean;
   readonly editing: boolean;
-  readonly editedQuestId: string | null;
+  readonly editedQuest: Quest | null;
 }
 
 const mapStateToProps = (state: State): Props => ({
@@ -51,30 +51,38 @@ class QuestList extends React.Component<Props, OwnState> {
     this.state = {
       adding: false,
       editing: false,
-      editedQuestId: null,
+      editedQuest: null,
     };
     this.openAddQuestModal = this.openAddQuestModal.bind(this);
     this.closeAddQuestModal = this.closeAddQuestModal.bind(this);
+    this.openEditQuestModal = this.openEditQuestModal.bind(this);
+    this.closeEditQuestModal = this.closeEditQuestModal.bind(this);
   }
 
   private openAddQuestModal() {
-    const nextState = produce(this.state, (draft: Draft<OwnState>) => {
-      draft.adding = true;
-    });
+    const nextState = produce(this.state, draft => { draft.adding = true; });
     this.setState(nextState);
   }
 
   private closeAddQuestModal() {
-    const nextState = produce(this.state, (draft: Draft<OwnState>) => {
-      draft.adding = false;
-    });
+    const nextState = produce(this.state, draft => { draft.adding = false; });
+    this.setState(nextState);
+  }
+
+  private openEditQuestModal(quest: Quest) {
+    const nextState = produce(this.state, draft => { draft.editedQuest = quest; });
+    this.setState(nextState);
+  }
+
+  private closeEditQuestModal() {
+    const nextState = produce(this.state, draft => { draft.editedQuest = null; });
     this.setState(nextState);
   }
 
   public render() {
     const quests = this.props.quests;
     const listContent = quests.length > 0
-      ? quests.map(quest => (<QuestCard quest={quest} key={quest.id}/>))
+      ? quests.map(quest => (<QuestCard quest={quest} key={quest.id} edit={this.openEditQuestModal}/>))
       : <p>No quests here.</p>;
     return (
       <div className="quests">
@@ -87,10 +95,11 @@ class QuestList extends React.Component<Props, OwnState> {
               </AddQuestButton>
             </Tooltip>
           </ListActions>
-          {/*{showAddButton && <AddQuestModal visible={showModal} closeModal={this.closeModal} />}*/}
         </ListHeader>
         <AddQuestModal visible={this.state.adding} hide={this.closeAddQuestModal}/>
-        {/*<EditQuestModal visible={this.state.editing} questId={this.state.editedQuestId}/>*/}
+        <EditQuestModal quest={this.state.editedQuest}
+                        hide={this.closeEditQuestModal}
+        />
         {listContent}
       </div>
     );

@@ -20,6 +20,7 @@ const Body = styled.div`
 
 const quests = [
   createQuest('Foo', 'Quux'),
+  createQuest('Bar', 'Fnord'),
 ];
 
 const store = createStore(questReducer, { quests });

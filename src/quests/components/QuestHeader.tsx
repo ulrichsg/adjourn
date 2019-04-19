@@ -31,15 +31,16 @@ const CardActions = styled(Button.Group)`
 `;
 
 interface OwnProps {
-  quest: Quest;
+  readonly quest: Quest;
+  readonly edit: (quest: Quest) => void;
 }
 
 type QuestAction = (questId: string) => () => void;
 
 interface DispatchProps {
-  toggleCollapsed: QuestAction;
-  toggleCompleted: QuestAction;
-  deleteQuest: QuestAction;
+  readonly toggleCollapsed: QuestAction;
+  readonly toggleCompleted: QuestAction;
+  readonly deleteQuest: QuestAction;
 }
 
 type Props = OwnProps & DispatchProps;
@@ -53,6 +54,11 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
 class QuestHeader extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
+    this.openEditModal = this.openEditModal.bind(this);
+  }
+
+  private openEditModal() {
+    this.props.edit(this.props.quest);
   }
 
   public render(): ReactNode {
@@ -62,7 +68,6 @@ class QuestHeader extends React.Component<Props, {}> {
       toggleCompleted: complete,
       deleteQuest: deleteIt,
     } = this.props;
-    const openEditModal = () => () => ({});
     return (
       <CardHeader>
         <CardExpander>
@@ -70,7 +75,7 @@ class QuestHeader extends React.Component<Props, {}> {
         </CardExpander>
         <CardTitle>{quest.title}</CardTitle>
         <CardActions>
-          <ActionButton icon="edit" onClick={openEditModal(quest.id)}/>
+          <ActionButton icon="edit" onClick={this.openEditModal}/>
           <ActionButton icon="delete" onClick={deleteIt(quest.id)}/>
           <ActionButton icon="check" onClick={complete(quest.id)}/>
         </CardActions>
