@@ -18,6 +18,9 @@ const ListHeader = styled.div`
 
 const ListActions = styled.div`
   margin-left: auto;
+  button {
+    margin-left: 5px;
+  }
 `;
 
 const AddQuestButton = styled(Button)`
@@ -36,6 +39,7 @@ interface Props {
 }
 
 interface OwnState {
+  readonly showCompleted: boolean;
   readonly adding: boolean;
   readonly editing: boolean;
   readonly editedQuest: Quest | null;
@@ -49,6 +53,7 @@ class QuestList extends React.Component<Props, OwnState> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      showCompleted: false,
       adding: false,
       editing: false,
       editedQuest: null,
@@ -57,6 +62,7 @@ class QuestList extends React.Component<Props, OwnState> {
     this.closeAddQuestModal = this.closeAddQuestModal.bind(this);
     this.openEditQuestModal = this.openEditQuestModal.bind(this);
     this.closeEditQuestModal = this.closeEditQuestModal.bind(this);
+    this.toggleShowCompleted = this.toggleShowCompleted.bind(this);
   }
 
   private openAddQuestModal() {
@@ -79,8 +85,16 @@ class QuestList extends React.Component<Props, OwnState> {
     this.setState(nextState);
   }
 
+  private toggleShowCompleted() {
+    const nextState = produce(this.state, draft => { draft.showCompleted = !this.state.showCompleted; });
+    this.setState(nextState);
+  }
+
   public render() {
-    const quests = this.props.quests;
+    const showCompleted = this.state.showCompleted;
+    const quests = this.props.quests.filter(quest => {
+      return showCompleted || !quest.done;
+    });
     const listContent = quests.length > 0
       ? quests.map(quest => (<QuestCard quest={quest} key={quest.id} edit={this.openEditQuestModal}/>))
       : <p>No quests here.</p>;
@@ -89,6 +103,11 @@ class QuestList extends React.Component<Props, OwnState> {
         <ListHeader>
           <div>Quests</div>
           <ListActions>
+            <Tooltip title={showCompleted ? 'Hide Completed' : 'Show Completed'}>
+              <Button type={showCompleted ? 'default' : 'dashed'} shape="circle" onClick={this.toggleShowCompleted}>
+                <Icon type="check"/>
+              </Button>
+            </Tooltip>
             <Tooltip title="Add Quest">
               <AddQuestButton type="primary" shape="circle" onClick={this.openAddQuestModal}>
                 <Icon type="plus"/>

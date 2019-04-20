@@ -12,6 +12,10 @@ const CardHeader = styled.div`
   border: 1px solid #AAA;
   background-color: #CCC;
   padding: 1px;
+
+  &.done {
+    background-color: #a5d6a7;
+  }
 `;
 
 const CardTitle = styled.div`
@@ -69,14 +73,14 @@ class QuestHeader extends React.Component<Props, {}> {
       deleteQuest: deleteIt,
     } = this.props;
     return (
-      <CardHeader>
+      <CardHeader className={quest.done ? 'done' : ''}>
         <CardExpander>
           <Icon type={quest.collapsed ? 'caret-right' : 'caret-down'} onClick={collapse(quest.id)}/>
         </CardExpander>
         <CardTitle>{quest.title}</CardTitle>
         <CardActions>
           <ActionButton icon="edit" onClick={this.openEditModal}/>
-          <ActionButton icon="delete" onClick={deleteIt(quest.id)}/>
+          <ActionButton icon="delete" onClick={deleteIt(quest.id)} type="danger"/>
           <ActionButton icon="check" onClick={complete(quest.id)}/>
         </CardActions>
       </CardHeader>
