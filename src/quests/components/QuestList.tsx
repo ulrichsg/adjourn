@@ -1,9 +1,12 @@
 import { Button, Icon, Input, Tooltip } from 'antd';
 import produce from 'immer';
 import React from 'react';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import styled from 'styled-components';
 import Quest from '../quest';
+import { changeQuestOrder } from '../QuestActions';
 import { State } from '../QuestReducer';
 import AddQuestModal from './AddQuestModal';
 import EditQuestModal from './EditQuestModal';
@@ -36,9 +39,20 @@ const AddQuestButton = styled(Button)`
   }
 `;
 
-interface Props {
+const QuestCards = styled.ul`
+  list-style: none outside;
+  padding-inline-start: 0;
+`;
+
+interface StateProps {
   readonly quests: Quest[];
 }
+
+interface DispatchProps {
+  readonly changeQuestOrder: (questId: string, newIndex: number) => void;
+}
+
+type Props = StateProps & DispatchProps;
 
 interface OwnState {
   readonly showCompleted: boolean;
@@ -48,8 +62,12 @@ interface OwnState {
   readonly editedQuest: Quest | null;
 }
 
-const mapStateToProps = (state: State): Props => ({
+const mapStateToProps = (state: State): StateProps => ({
   quests: state.quests,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  changeQuestOrder: (questId: string, newIndex: number) => dispatch(changeQuestOrder(questId, newIndex)),
 });
 
 class QuestList extends React.Component<Props, OwnState> {
@@ -68,6 +86,7 @@ class QuestList extends React.Component<Props, OwnState> {
     this.closeEditQuestModal = this.closeEditQuestModal.bind(this);
     this.toggleShowCompleted = this.toggleShowCompleted.bind(this);
     this.filter = this.filter.bind(this);
+    this.handleDragDrop = this.handleDragDrop.bind(this);
   }
 
   private openAddQuestModal() {
@@ -100,42 +119,66 @@ class QuestList extends React.Component<Props, OwnState> {
     this.setState(nextState);
   }
 
+  private handleDragDrop(result: DropResult) {
+    if (result.reason === 'CANCEL' || !result.destination) {
+      return;
+    }
+    const questId = result.draggableId;
+    const newIndex = result.destination.index;
+    const quest = this.props.quests.find(q => q.id === questId);
+    if (quest && quest.sortIndex !== newIndex) {
+      this.props.changeQuestOrder(questId, newIndex);
+    }
+  }
+
   public render() {
     const { showCompleted, searchString } = this.state;
-    const quests = this.props.quests.filter(quest => {
-      return (showCompleted || !quest.done)
-        && (searchString === '' || quest.title.includes(searchString) || quest.notes.includes(searchString))
-        ;
-    });
+    const quests = Array
+      .from(this.props.quests)
+      .filter(quest => {
+        return (showCompleted || !quest.done)
+          && (searchString === '' || quest.title.includes(searchString) || quest.notes.includes(searchString))
+          ;
+      })
+      .sort((left: Quest, right: Quest) => left.sortIndex > right.sortIndex ? 1 : -1);
     const listContent = quests.length > 0
       ? quests.map(quest => (<QuestCard quest={quest} key={quest.id} edit={this.openEditQuestModal}/>))
       : <p>No quests here.</p>;
     return (
-      <div className="quests">
-        <ListHeader>
-          <div>Quests</div>
-          <ListActions>
-            <Input.Search placeholder="Filter" onSearch={this.filter} style={{ width: 200 }}/>
-            <Tooltip title={showCompleted ? 'Hide Completed' : 'Show Completed'}>
-              <Button type={showCompleted ? 'default' : 'dashed'} shape="circle" onClick={this.toggleShowCompleted}>
-                <Icon type="check"/>
-              </Button>
-            </Tooltip>
-            <Tooltip title="Add Quest">
-              <AddQuestButton type="primary" shape="circle" onClick={this.openAddQuestModal}>
-                <Icon type="plus"/>
-              </AddQuestButton>
-            </Tooltip>
-          </ListActions>
-        </ListHeader>
-        <AddQuestModal visible={this.state.adding} hide={this.closeAddQuestModal}/>
-        <EditQuestModal quest={this.state.editedQuest}
-                        hide={this.closeEditQuestModal}
-        />
-        {listContent}
-      </div>
+      <DragDropContext onDragEnd={this.handleDragDrop}>
+        <div className="quests">
+          <ListHeader>
+            <div>Quests</div>
+            <ListActions>
+              <Input.Search placeholder="Filter" onSearch={this.filter} style={{ width: 200 }}/>
+              <Tooltip title={showCompleted ? 'Hide Completed' : 'Show Completed'}>
+                <Button type={showCompleted ? 'default' : 'dashed'} shape="circle" onClick={this.toggleShowCompleted}>
+                  <Icon type="check"/>
+                </Button>
+              </Tooltip>
+              <Tooltip title="Add Quest">
+                <AddQuestButton type="primary" shape="circle" onClick={this.openAddQuestModal}>
+                  <Icon type="plus"/>
+                </AddQuestButton>
+              </Tooltip>
+            </ListActions>
+          </ListHeader>
+          <AddQuestModal visible={this.state.adding} hide={this.closeAddQuestModal}/>
+          <EditQuestModal quest={this.state.editedQuest}
+                          hide={this.closeEditQuestModal}
+          />
+          <Droppable droppableId="quests">
+            {provided => (
+              <QuestCards ref={provided.innerRef} {...provided.droppableProps}>
+                {listContent}
+                {provided.placeholder}
+              </QuestCards>
+            )}
+          </Droppable>
+        </div>
+      </DragDropContext>
     );
   }
 }
 
-export default connect(mapStateToProps, () => ({}))(QuestList);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestList);

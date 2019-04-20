@@ -19,8 +19,10 @@ const Body = styled.div`
 `;
 
 const quests = [
-  createQuest('Foo', 'Quux'),
-  createQuest('Bar', 'Fnord'),
+  createQuest('Foo', 'Quux', 0),
+  createQuest('Bar', 'Fnord', 1),
+  createQuest('Qix', 'Truf', 2),
+  createQuest('Herp', 'Derp', 3),
 ];
 
 const store = createStore(questReducer, { quests });

@@ -9,7 +9,8 @@
     "max-classes-per-file": false,
     "forin": false,
     "member-ordering": false,
-    "jsx-alignment": false
+    "jsx-alignment": false,
+    "jsx-no-multiline-js": false
   },
   "linterOptions": {
     "exclude": [

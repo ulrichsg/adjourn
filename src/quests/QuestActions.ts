@@ -5,7 +5,8 @@ export type Action =
   | ToggleCompleted
   | AddQuest
   | DeleteQuest
-  | EditQuest;
+  | EditQuest
+  | ChangeQuestOrder;
 
 export enum ActionType {
   TOGGLE_COLLAPSED = 'toggle_collapsed',
@@ -13,6 +14,7 @@ export enum ActionType {
   ADD_QUEST = 'add_quest',
   DELETE_QUEST = 'delete_quest',
   EDIT_QUEST = 'edit_quest',
+  CHANGE_QUEST_ORDER = 'change_quest_order',
 }
 
 export interface ToggleCollapsed {
@@ -82,5 +84,19 @@ export function editQuest(questId: string, title: string, notes: string): EditQu
     questId,
     title,
     notes,
+  };
+}
+
+export interface ChangeQuestOrder {
+  type: ActionType.CHANGE_QUEST_ORDER;
+  questId: string;
+  newIndex: number;
+}
+
+export function changeQuestOrder(questId: string, newIndex: number): ChangeQuestOrder {
+  return {
+    type: ActionType.CHANGE_QUEST_ORDER,
+    questId,
+    newIndex,
   };
 }

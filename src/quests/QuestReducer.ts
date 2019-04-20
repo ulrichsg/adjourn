@@ -30,7 +30,7 @@ export default function questReducer(state: State = initialState, action: Action
         }
         break;
       case ActionType.ADD_QUEST:
-        quest = createQuest(action.title, action.notes);
+        quest = createQuest(action.title, action.notes, draft.quests.length);
         draft.quests.push(quest);
         break;
       case ActionType.EDIT_QUEST:
@@ -44,6 +44,24 @@ export default function questReducer(state: State = initialState, action: Action
         [i, quest] = findQuestIndex(draft, action.questId);
         if (quest) {
           draft.quests.splice(i, 1);
+        }
+        break;
+      case ActionType.CHANGE_QUEST_ORDER:
+        [i, quest] = findQuestIndex(draft, action.questId);
+        if (!quest) {
+          return;
+        }
+        const forward = action.newIndex > quest.sortIndex;
+        const oldIndex = quest.sortIndex;
+        for (const k of draft.quests.keys()) {
+          const currentSortIndex = draft.quests[k].sortIndex;
+          if (k === i) {
+            draft.quests[k].sortIndex = action.newIndex;
+          } else if (forward && currentSortIndex > oldIndex && currentSortIndex <= action.newIndex) {
+            --draft.quests[k].sortIndex;
+          } else if (!forward && currentSortIndex >= action.newIndex && currentSortIndex < oldIndex) {
+            ++draft.quests[k].sortIndex;
+          }
         }
         break;
     }

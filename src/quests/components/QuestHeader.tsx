@@ -1,5 +1,6 @@
 import { Button, Icon } from 'antd';
 import React, { ReactNode } from 'react';
+import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
@@ -37,6 +38,7 @@ const CardActions = styled(Button.Group)`
 interface OwnProps {
   readonly quest: Quest;
   readonly edit: (quest: Quest) => void;
+  readonly dragHandleProps: DraggableProvidedDragHandleProps;
 }
 
 type QuestAction = (questId: string) => () => void;
@@ -71,9 +73,10 @@ class QuestHeader extends React.Component<Props, {}> {
       toggleCollapsed: collapse,
       toggleCompleted: complete,
       deleteQuest: deleteIt,
+      dragHandleProps,
     } = this.props;
     return (
-      <CardHeader className={quest.done ? 'done' : ''}>
+      <CardHeader className={quest.done ? 'done' : ''} {...dragHandleProps}>
         <CardExpander>
           <Icon type={quest.collapsed ? 'caret-right' : 'caret-down'} onClick={collapse(quest.id)}/>
         </CardExpander>
