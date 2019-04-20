@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip } from 'antd';
+import { Button, Icon, Input, Tooltip } from 'antd';
 import produce from 'immer';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -17,7 +17,9 @@ const ListHeader = styled.div`
 `;
 
 const ListActions = styled.div`
+  white-space: nowrap;
   margin-left: auto;
+  flex-shrink: 0;
   button {
     margin-left: 5px;
   }
@@ -40,6 +42,7 @@ interface Props {
 
 interface OwnState {
   readonly showCompleted: boolean;
+  readonly searchString: string;
   readonly adding: boolean;
   readonly editing: boolean;
   readonly editedQuest: Quest | null;
@@ -54,6 +57,7 @@ class QuestList extends React.Component<Props, OwnState> {
     super(props);
     this.state = {
       showCompleted: false,
+      searchString: '',
       adding: false,
       editing: false,
       editedQuest: null,
@@ -63,6 +67,7 @@ class QuestList extends React.Component<Props, OwnState> {
     this.openEditQuestModal = this.openEditQuestModal.bind(this);
     this.closeEditQuestModal = this.closeEditQuestModal.bind(this);
     this.toggleShowCompleted = this.toggleShowCompleted.bind(this);
+    this.filter = this.filter.bind(this);
   }
 
   private openAddQuestModal() {
@@ -90,10 +95,17 @@ class QuestList extends React.Component<Props, OwnState> {
     this.setState(nextState);
   }
 
+  private filter(searchString: string) {
+    const nextState = produce(this.state, draft => { draft.searchString = searchString; });
+    this.setState(nextState);
+  }
+
   public render() {
-    const showCompleted = this.state.showCompleted;
+    const { showCompleted, searchString } = this.state;
     const quests = this.props.quests.filter(quest => {
-      return showCompleted || !quest.done;
+      return (showCompleted || !quest.done)
+        && (searchString === '' || quest.title.includes(searchString) || quest.notes.includes(searchString))
+        ;
     });
     const listContent = quests.length > 0
       ? quests.map(quest => (<QuestCard quest={quest} key={quest.id} edit={this.openEditQuestModal}/>))
@@ -103,6 +115,7 @@ class QuestList extends React.Component<Props, OwnState> {
         <ListHeader>
           <div>Quests</div>
           <ListActions>
+            <Input.Search placeholder="Filter" onSearch={this.filter} style={{ width: 200 }}/>
             <Tooltip title={showCompleted ? 'Hide Completed' : 'Show Completed'}>
               <Button type={showCompleted ? 'default' : 'dashed'} shape="circle" onClick={this.toggleShowCompleted}>
                 <Icon type="check"/>
@@ -125,4 +138,4 @@ class QuestList extends React.Component<Props, OwnState> {
   }
 }
 
-export default connect<Props, {}, {}, State>(mapStateToProps, () => ({}))(QuestList);
+export default connect(mapStateToProps, () => ({}))(QuestList);
