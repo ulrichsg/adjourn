@@ -16,6 +16,7 @@ require('typeface-open-sans');
 
 const Body = styled.div`
   width: 1170px;
+  max-width: 90%;
   margin: 0 auto;
 `;
 
@@ -43,10 +44,10 @@ render((
         <Body>
           <h1>{ game.name }</h1>
           <Row type="flex" gutter={40}>
-            <Col span={12}>
+            <Col xs={24} md={12}>
               Placeholder
             </Col>
-            <Col span={12}>
+            <Col xs={24} md={12}>
               <QuestList/>
             </Col>
           </Row>

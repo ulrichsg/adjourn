@@ -1,6 +1,6 @@
 import Quest from '../quests/Quest';
 
-interface Game {
+export interface Game {
   id: string;
   name: string;
 }
