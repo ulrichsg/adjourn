@@ -1,16 +1,7 @@
 import produce from 'immer';
+import { initialState, State } from '../model';
 import Quest, { createQuest } from './Quest';
 import { Action, ActionType } from './QuestActions';
-
-export interface State {
-  activeGameId: string;
-  quests: Quest[];
-}
-
-const initialState: State = {
-  activeGameId: '',
-  quests: [],
-};
 
 export default function questReducer(state: State = initialState, action: Action): State {
   return produce(state, (draft: State) => {
@@ -30,7 +21,8 @@ export default function questReducer(state: State = initialState, action: Action
         }
         break;
       case ActionType.ADD_QUEST:
-        quest = createQuest(action.title, action.notes, draft.quests.length);
+        const nextSortIndex = draft.quests.filter(q => q.gameId === action.gameId).length;
+        quest = createQuest(action.gameId, action.title, action.notes, nextSortIndex);
         draft.quests.push(quest);
         break;
       case ActionType.EDIT_QUEST:
@@ -51,10 +43,15 @@ export default function questReducer(state: State = initialState, action: Action
         if (!quest) {
           return;
         }
+        const gameId = quest.gameId;
         const forward = action.newIndex > quest.sortIndex;
         const oldIndex = quest.sortIndex;
         for (const k of draft.quests.keys()) {
-          const currentSortIndex = draft.quests[k].sortIndex;
+          const currentQuest = draft.quests[k];
+          if (currentQuest.gameId !== gameId) {
+            continue;
+          }
+          const currentSortIndex = currentQuest.sortIndex;
           if (k === i) {
             draft.quests[k].sortIndex = action.newIndex;
           } else if (forward && currentSortIndex > oldIndex && currentSortIndex <= action.newIndex) {

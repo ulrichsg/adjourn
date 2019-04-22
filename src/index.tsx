@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import styled from 'styled-components';
+import uuid from 'uuid';
 import Header from './header/header';
 import QuestList from './quests/components/QuestList';
 import { createQuest } from './quests/Quest';
@@ -18,21 +19,29 @@ const Body = styled.div`
   margin: 0 auto;
 `;
 
+const game = { id: uuid.v4(), name: 'Pool of Radiance' };
+
 const quests = [
-  createQuest('Foo', 'Quux', 0),
-  createQuest('Bar', 'Fnord', 1),
-  createQuest('Qix', 'Truf', 2),
-  createQuest('Herp', 'Derp', 3),
+  createQuest(game.id, 'Foo', 'Quux', 0),
+  createQuest(game.id, 'Bar', 'Fnord', 1),
+  createQuest(game.id, 'Qix', 'Truf', 2),
+  createQuest(game.id, 'Herp', 'Derp', 3),
 ];
 
-const store = createStore(questReducer, { quests });
+const state = {
+  games: [game],
+  activeGameId: game.id,
+  quests,
+};
+
+const store = createStore(questReducer, state);
 
 render((
     <Provider store={store}>
       <React.Fragment>
         <Header/>
         <Body>
-          <h1>Insert Game Name Here</h1>
+          <h1>{ game.name }</h1>
           <Row type="flex" gutter={40}>
             <Col span={12}>
               Placeholder

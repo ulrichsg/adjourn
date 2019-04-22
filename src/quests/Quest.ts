@@ -2,6 +2,7 @@ import uuid from 'uuid';
 
 export default interface Quest {
   id: string;
+  gameId: string;
   title: string;
   notes: string;
   done: boolean;
@@ -9,9 +10,10 @@ export default interface Quest {
   sortIndex: number;
 }
 
-export function createQuest(title: string, notes: string, sortIndex: number): Quest {
+export function createQuest(gameId: string, title: string, notes: string, sortIndex: number): Quest {
   return {
     id: uuid.v4(),
+    gameId,
     title,
     notes,
     done: false,

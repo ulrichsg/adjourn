@@ -5,9 +5,9 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
+import { State } from '../../model';
 import Quest from '../quest';
 import { changeQuestOrder } from '../QuestActions';
-import { State } from '../QuestReducer';
 import AddQuestModal from './AddQuestModal';
 import EditQuestModal from './EditQuestModal';
 import QuestCard from './QuestCard';
@@ -45,6 +45,7 @@ const QuestCards = styled.ul`
 `;
 
 interface StateProps {
+  readonly gameId: string;
   readonly quests: Quest[];
 }
 
@@ -63,6 +64,7 @@ interface OwnState {
 }
 
 const mapStateToProps = (state: State): StateProps => ({
+  gameId: state.activeGameId,
   quests: state.quests,
 });
 
@@ -124,23 +126,36 @@ class QuestList extends React.Component<Props, OwnState> {
       return;
     }
     const questId = result.draggableId;
-    const newIndex = result.destination.index;
+    // result.destination.index gives us the position relative to the currently displayed list,
+    // so we have to convert that into the position relative to all quests for the current game
+    let newIndex = result.destination.index;
+    if (newIndex > 0) {
+      const allQuests = this.filterQuests();
+      const questToPlaceThisAfter = allQuests[newIndex];
+      newIndex = questToPlaceThisAfter.sortIndex;
+    }
     const quest = this.props.quests.find(q => q.id === questId);
     if (quest && quest.sortIndex !== newIndex) {
       this.props.changeQuestOrder(questId, newIndex);
     }
   }
 
-  public render() {
+  private filterQuests(): Quest[] {
     const { showCompleted, searchString } = this.state;
-    const quests = Array
+    return Array
       .from(this.props.quests)
       .filter(quest => {
-        return (showCompleted || !quest.done)
+        return quest.gameId === this.props.gameId
+          && (showCompleted || !quest.done)
           && (searchString === '' || quest.title.includes(searchString) || quest.notes.includes(searchString))
           ;
       })
       .sort((left: Quest, right: Quest) => left.sortIndex > right.sortIndex ? 1 : -1);
+  }
+
+  public render() {
+    const { showCompleted } = this.state;
+    const quests = this.filterQuests();
     const listContent = quests.length > 0
       ? quests.map(quest => (<QuestCard quest={quest} key={quest.id} edit={this.openEditQuestModal}/>))
       : <p>No quests here.</p>;

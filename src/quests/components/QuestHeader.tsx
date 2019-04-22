@@ -38,7 +38,7 @@ const CardActions = styled(Button.Group)`
 interface OwnProps {
   readonly quest: Quest;
   readonly edit: (quest: Quest) => void;
-  readonly dragHandleProps: DraggableProvidedDragHandleProps;
+  readonly dragHandleProps: DraggableProvidedDragHandleProps | null;
 }
 
 type QuestAction = (questId: string) => () => void;

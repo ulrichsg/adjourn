@@ -10,7 +10,8 @@
     "forin": false,
     "member-ordering": false,
     "jsx-alignment": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "jsx-curly-spacing": false
   },
   "linterOptions": {
     "exclude": [
