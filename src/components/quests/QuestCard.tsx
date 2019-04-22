@@ -1,7 +1,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import Quest from '../quest';
+import Quest from '../../model/quests/Quest';
 import QuestHeader from './QuestHeader';
 
 const QuestContainer = styled.li`

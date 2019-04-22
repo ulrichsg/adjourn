@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import Quest from '../Quest';
-import { editQuest } from '../QuestActions';
+import Quest from '../../model/quests/Quest';
+import { editQuest } from '../../model/quests/QuestActions';
 import QuestModal from './QuestModal';
 
 interface OwnProps {

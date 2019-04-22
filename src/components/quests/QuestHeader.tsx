@@ -4,8 +4,8 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
-import Quest from '../quest';
-import { deleteQuest, toggleCollapsed, toggleCompleted } from '../QuestActions';
+import Quest from '../../model/quests/Quest';
+import { deleteQuest, toggleCollapsed, toggleCompleted } from '../../model/quests/QuestActions';
 import ActionButton from './ActionButton';
 
 const CardHeader = styled.div`

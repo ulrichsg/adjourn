@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 
-export type Action =
+export type QuestAction =
   | ToggleCollapsed
   | ToggleCompleted
   | AddQuest
@@ -8,7 +8,7 @@ export type Action =
   | EditQuest
   | ChangeQuestOrder;
 
-export enum ActionType {
+export enum QuestActionType {
   TOGGLE_COLLAPSED = 'toggle_collapsed',
   TOGGLE_COMPLETED = 'toggle_completed',
   ADD_QUEST = 'add_quest',
@@ -17,32 +17,41 @@ export enum ActionType {
   CHANGE_QUEST_ORDER = 'change_quest_order',
 }
 
+export const questActionTypes: string[] = [
+  QuestActionType.TOGGLE_COLLAPSED,
+  QuestActionType.TOGGLE_COMPLETED,
+  QuestActionType.ADD_QUEST,
+  QuestActionType.DELETE_QUEST,
+  QuestActionType.EDIT_QUEST,
+  QuestActionType.CHANGE_QUEST_ORDER,
+];
+
 export interface ToggleCollapsed {
-  type: ActionType.TOGGLE_COLLAPSED;
+  type: QuestActionType.TOGGLE_COLLAPSED;
   questId: string;
 }
 
 export function toggleCollapsed(questId: string): ToggleCollapsed {
   return {
-    type: ActionType.TOGGLE_COLLAPSED,
+    type: QuestActionType.TOGGLE_COLLAPSED,
     questId,
   };
 }
 
 export interface ToggleCompleted {
-  type: ActionType.TOGGLE_COMPLETED;
+  type: QuestActionType.TOGGLE_COMPLETED;
   questId: string;
 }
 
 export function toggleCompleted(questId: string): ToggleCompleted {
   return {
-    type: ActionType.TOGGLE_COMPLETED,
+    type: QuestActionType.TOGGLE_COMPLETED,
     questId,
   };
 }
 
 export interface AddQuest {
-  type: ActionType.ADD_QUEST;
+  type: QuestActionType.ADD_QUEST;
   questId: string;
   gameId: string;
   title: string;
@@ -51,7 +60,7 @@ export interface AddQuest {
 
 export function addQuest(gameId: string, title: string, notes: string): AddQuest {
   return {
-    type: ActionType.ADD_QUEST,
+    type: QuestActionType.ADD_QUEST,
     questId: uuid.v4(),
     gameId,
     title,
@@ -60,19 +69,19 @@ export function addQuest(gameId: string, title: string, notes: string): AddQuest
 }
 
 export interface DeleteQuest {
-  type: ActionType.DELETE_QUEST;
+  type: QuestActionType.DELETE_QUEST;
   questId: string;
 }
 
 export function deleteQuest(questId: string): DeleteQuest {
   return {
-    type: ActionType.DELETE_QUEST,
+    type: QuestActionType.DELETE_QUEST,
     questId,
   };
 }
 
 export interface EditQuest {
-  type: ActionType.EDIT_QUEST;
+  type: QuestActionType.EDIT_QUEST;
   questId: string;
   title: string;
   notes: string;
@@ -80,7 +89,7 @@ export interface EditQuest {
 
 export function editQuest(questId: string, title: string, notes: string): EditQuest {
   return {
-    type: ActionType.EDIT_QUEST,
+    type: QuestActionType.EDIT_QUEST,
     questId,
     title,
     notes,
@@ -88,14 +97,14 @@ export function editQuest(questId: string, title: string, notes: string): EditQu
 }
 
 export interface ChangeQuestOrder {
-  type: ActionType.CHANGE_QUEST_ORDER;
+  type: QuestActionType.CHANGE_QUEST_ORDER;
   questId: string;
   newIndex: number;
 }
 
 export function changeQuestOrder(questId: string, newIndex: number): ChangeQuestOrder {
   return {
-    type: ActionType.CHANGE_QUEST_ORDER,
+    type: QuestActionType.CHANGE_QUEST_ORDER,
     questId,
     newIndex,
   };
