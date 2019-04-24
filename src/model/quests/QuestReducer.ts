@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { State } from '../reducer';
+import State from '../State';
 import Quest, { createQuest } from './Quest';
 import { QuestAction, QuestActionType } from './QuestActions';
 

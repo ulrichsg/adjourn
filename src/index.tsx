@@ -6,7 +6,10 @@ import { createStore } from 'redux';
 import styled from 'styled-components';
 import uuid from 'uuid';
 import Header from './components/header/header';
+import KnowledgeBase from './components/knowledge/KnowledgeBase';
 import QuestList from './components/quests/QuestList';
+import { createKnowledgeCategory } from './model/knowledge/KnowledgeCategory';
+import { createKnowledgeItem } from './model/knowledge/KnowledgeItem';
 import mainReducer from './model/MainReducer';
 import { createQuest } from './model/quests/Quest';
 
@@ -29,10 +32,22 @@ const quests = [
   createQuest(game.id, 'Herp', 'Derp', 3),
 ];
 
+const categories = [
+  createKnowledgeCategory(game.id, 'Places'),
+];
+
+const items = [
+  createKnowledgeItem(categories[0].id, null, 'New Phlan', 'Lorem ipsum dolor sit amet'),
+];
+
 const mockState = {
   games: [game],
   activeGameId: game.id,
   quests,
+  knowledge: {
+    categories,
+    items,
+  },
 };
 
 const store = createStore(mainReducer, mockState);
@@ -45,7 +60,7 @@ render((
           <h1>{ game.name }</h1>
           <Row type="flex" gutter={40}>
             <Col xs={24} md={12}>
-              Placeholder
+              <KnowledgeBase/>
             </Col>
             <Col xs={24} md={12}>
               <QuestList/>
