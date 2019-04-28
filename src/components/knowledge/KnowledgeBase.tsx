@@ -26,7 +26,7 @@ class KnowledgeBase extends React.Component<StateProps, {}> {
     const { categories } = this.props;
     return (
       <Categories>
-        { categories.map(category => <KbCategory category={category}/>) }
+        { categories.map(category => <KbCategory category={category} key={category.id}/>) }
       </Categories>
     );
   };

@@ -1,7 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
 import State from '../../model/State';
+import KbItemHeader from './KbItemHeader';
+
+const KbItemCard = styled.div`
+  border: 1px solid #AAA;
+  border-bottom-width: 0;
+  
+  &:last-child {
+  border-bottom-width: 1px;
+  }
+`;
+
+const KbItemContent = styled.div`
+  border-top: 1px solid #AAA;
+  padding: 5px 2px 5px 10px;
+`;
 
 interface OwnProps {
   item: KnowledgeItem;
@@ -21,14 +37,21 @@ function mapStateToProps(state: State, ownProps: OwnProps): StateProps {
 
 class KbItem extends React.Component<Props, {}> {
   public render() {
-    const { item } = this.props;
+    const { item, children } = this.props;
+    const renderContent = () => (
+      <KbItemContent>
+        { item.content }
+        { children.map(child => <ConnectedKbItem item={ child } key={ child.id }/>)}
+      </KbItemContent>
+    );
     return (
-      <div>
-        <div>{ item.title }</div>
-        <div>{ item.content }</div>
-      </div>
+      <KbItemCard>
+        <KbItemHeader item={ item }/>
+        { item.collapsed || renderContent() }
+      </KbItemCard>
     );
   }
 }
 
-export default connect(mapStateToProps, () => ({}))(KbItem);
+const ConnectedKbItem = connect(mapStateToProps, () => ({}))(KbItem);
+export default ConnectedKbItem;

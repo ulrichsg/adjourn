@@ -1,39 +1,11 @@
-import { Button, Icon } from 'antd';
 import React, { ReactNode } from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import styled from 'styled-components';
 import Quest from '../../model/quests/Quest';
 import { deleteQuest, toggleCollapsed, toggleCompleted } from '../../model/quests/QuestActions';
+import CardHeader from '../shared/CardHeader';
 import ActionButton from './ActionButton';
-
-const CardHeader = styled.div`
-  display: flex;
-  border: 1px solid #AAA;
-  background-color: #CCC;
-  padding: 1px;
-
-  &.done {
-    background-color: #a5d6a7;
-  }
-`;
-
-const CardTitle = styled.div`
-  font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const CardExpander = styled.div`
-  margin: 0 5px;
-`;
-
-const CardActions = styled(Button.Group)`
-  margin-left: auto;
-  flex-shrink: 0;
-`;
 
 interface OwnProps {
   readonly quest: Quest;
@@ -41,21 +13,22 @@ interface OwnProps {
   readonly dragHandleProps: DraggableProvidedDragHandleProps | null;
 }
 
-type QuestAction = (questId: string) => () => void;
-
 interface DispatchProps {
-  readonly toggleCollapsed: QuestAction;
-  readonly toggleCompleted: QuestAction;
-  readonly deleteQuest: QuestAction;
+  readonly toggleCollapsed: () => void;
+  readonly toggleCompleted: () => void;
+  readonly deleteQuest: () => void;
 }
 
 type Props = OwnProps & DispatchProps;
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  toggleCollapsed: (questId: string) => () => dispatch(toggleCollapsed(questId)),
-  toggleCompleted: (questId: string) => () => dispatch(toggleCompleted(questId)),
-  deleteQuest: (questId: string) => () => dispatch(deleteQuest(questId)),
-});
+function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchProps {
+  const questId = ownProps.quest.id;
+  return {
+    toggleCollapsed: () => dispatch(toggleCollapsed(questId)),
+    toggleCompleted: () => dispatch(toggleCompleted(questId)),
+    deleteQuest: () => dispatch(deleteQuest(questId)),
+  };
+}
 
 class QuestHeader extends React.Component<Props, {}> {
   constructor(props: Props) {
@@ -75,18 +48,21 @@ class QuestHeader extends React.Component<Props, {}> {
       deleteQuest: deleteIt,
       dragHandleProps,
     } = this.props;
+    // tslint:disable jsx-key
+    const actions = [
+      <ActionButton icon="edit" onClick={ this.openEditModal }/>,
+      <ActionButton icon="delete" onClick={ deleteIt } type="danger"/>,
+      <ActionButton icon="check" onClick={ complete }/>,
+    ];
     return (
-      <CardHeader className={quest.done ? 'done' : ''} {...dragHandleProps}>
-        <CardExpander>
-          <Icon type={quest.collapsed ? 'caret-right' : 'caret-down'} onClick={collapse(quest.id)}/>
-        </CardExpander>
-        <CardTitle>{quest.title}</CardTitle>
-        <CardActions>
-          <ActionButton icon="edit" onClick={this.openEditModal}/>
-          <ActionButton icon="delete" onClick={deleteIt(quest.id)} type="danger"/>
-          <ActionButton icon="check" onClick={complete(quest.id)}/>
-        </CardActions>
-      </CardHeader>
+
+      <CardHeader title={ quest.title }
+                  backgroundColor={ quest.done ? '#a5d6a7' : undefined }
+                  collapsed={ quest.collapsed }
+                  toggleCollapsed={ collapse }
+                  actions={ actions }
+                  dragHandleProps={ dragHandleProps }
+      />
     );
   }
 }

@@ -6,6 +6,7 @@ export default interface KnowledgeItem {
   parentId: string | null;
   title: string;
   content: string;
+  collapsed: boolean;
 }
 
 export function createKnowledgeItem(categoryId: string, parentId: string | null, title: string, content: string) {
@@ -15,5 +16,6 @@ export function createKnowledgeItem(categoryId: string, parentId: string | null,
     parentId,
     title,
     content,
+    collapsed: false,
   };
 }

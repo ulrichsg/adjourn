@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { State } from '../reducer';
+import State from '../State';
 import { createGame } from './Game';
 import { GameAction, GameActionType } from './GameActions';
 

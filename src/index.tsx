@@ -36,8 +36,13 @@ const categories = [
   createKnowledgeCategory(game.id, 'Places'),
 ];
 
+const place1 = createKnowledgeItem(categories[0].id, null, 'New Phlan', 'Lorem ipsum dolor sit amet');
+const place2 = createKnowledgeItem(categories[0].id, place1.id, 'The Stockades', 'Where the game starts');
 const items = [
-  createKnowledgeItem(categories[0].id, null, 'New Phlan', 'Lorem ipsum dolor sit amet'),
+  place1,
+  createKnowledgeItem(categories[0].id, null, 'Sorcerer\'s Isle', 'Home of Yarash'),
+  place2,
+  createKnowledgeItem(categories[0].id, place2.id, 'City Hall', 'Get quests here'),
 ];
 
 const mockState = {

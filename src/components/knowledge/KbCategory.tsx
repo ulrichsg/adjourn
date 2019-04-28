@@ -1,9 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
 import State from '../../model/State';
 import KbItem from './KbItem';
+
+const KbCategoryHeader = styled.div`
+  font-weight: bold;
+  font-size: 1.5em;
+`;
 
 interface OwnProps {
   category: KnowledgeCategory;
@@ -26,8 +32,8 @@ class KbCategory extends React.Component<Props, {}> {
     const { category, items } = this.props;
     return (
       <li>
-        <div>{ category.name }</div>
-        { items.map(item => <KbItem item={item}/>) }
+        <KbCategoryHeader>{ category.name }</KbCategoryHeader>
+        { items.map(item => <KbItem item={ item } key={ item.id }/>) }
       </li>
     );
   }
