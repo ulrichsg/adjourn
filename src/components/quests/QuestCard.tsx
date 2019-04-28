@@ -19,13 +19,7 @@ interface Props {
   readonly edit: (quest: Quest) => void;
 }
 
-interface State {
-  readonly editing: boolean;
-  readonly title: string;
-  readonly notes: string;
-}
-
-export default class QuestCard extends React.Component<Props, State> {
+export default class QuestCard extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }

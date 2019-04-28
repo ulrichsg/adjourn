@@ -1,6 +1,7 @@
 import { Form, Input, Modal } from 'antd';
 import produce from 'immer';
 import React, { ChangeEvent } from 'react';
+import ImmerStateComponent from '../shared/ImmerStateComponent';
 
 interface Props {
   readonly visible: boolean;
@@ -16,7 +17,7 @@ interface OwnState {
   readonly validTitle: boolean;
 }
 
-export default class QuestModal extends React.Component<Props, OwnState> {
+export default class QuestModal extends ImmerStateComponent<Props, OwnState> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -36,12 +37,11 @@ export default class QuestModal extends React.Component<Props, OwnState> {
 
   public componentDidUpdate(prevProps: Readonly<Props>) {
     if (prevProps.title !== this.props.title || prevProps.notes !== this.props.notes) {
-      const nextState = produce(this.state, draft => {
+      this.updateState(draft => {
         draft.title = this.props.title || '';
         draft.notes = this.props.notes || '';
         draft.validTitle = true;
       });
-      this.setState(nextState);
     }
   }
 
@@ -60,33 +60,29 @@ export default class QuestModal extends React.Component<Props, OwnState> {
   private updateTitle(event: ChangeEvent<HTMLInputElement>) {
     const title = event.target.value;
     const valid = this.validateTitle(title);
-    const nextState = produce(this.state, draft => {
+    this.updateState(draft => {
       draft.title = title;
       draft.validTitle = valid;
     });
-    this.setState(nextState);
   }
 
   private validateTitle(title: string): boolean {
     const valid = title.length > 0;
-    const nextState = produce(this.state, draft => { draft.validTitle = valid; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.validTitle = valid; });
     return valid;
   }
 
   private updateNotes(event: ChangeEvent<HTMLTextAreaElement>) {
     const notes = event.target.value;
-    const nextState = produce(this.state, draft => { draft.notes = notes; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.notes = notes; });
   }
 
   private reset() {
-    const nextState = produce(this.state, draft => {
+    this.updateState(draft => {
       draft.title = '';
       draft.notes = '';
       draft.validTitle = true;
     });
-    this.setState(nextState);
   }
 
   public render() {

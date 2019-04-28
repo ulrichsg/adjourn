@@ -11,7 +11,7 @@ const Categories = styled.ul`
 `;
 
 interface StateProps {
-  categories: KnowledgeCategory[];
+  readonly categories: KnowledgeCategory[];
 }
 
 function mapStateToProps(state: State): StateProps {
@@ -21,7 +21,7 @@ function mapStateToProps(state: State): StateProps {
   };
 }
 
-class KnowledgeBase extends React.Component<StateProps, {}> {
+class KnowledgeBase extends React.Component<StateProps> {
   public render() {
     const { categories } = this.props;
     return (

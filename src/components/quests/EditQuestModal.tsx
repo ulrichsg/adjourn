@@ -20,7 +20,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return { editQuest: (gameId: string, title: string, notes: string) => dispatch(editQuest(gameId, title, notes)) };
 }
 
-class EditQuestModal extends React.Component<Props, {}> {
+class EditQuestModal extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.submit = this.submit.bind(this);

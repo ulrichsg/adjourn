@@ -7,6 +7,7 @@ import { Dispatch } from 'redux';
 import Game from '../../model/games/Game';
 import { switchGame } from '../../model/games/GameActions';
 import State from '../../model/State';
+import ImmerStateComponent from '../shared/ImmerStateComponent';
 import AddGameModal from './AddGameModal';
 // import styled from 'styled-components';
 
@@ -50,7 +51,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 
 type Props = StateProps & DispatchProps;
 
-class Header extends React.Component<Props, OwnState> {
+class Header extends ImmerStateComponent<Props, OwnState> {
   constructor(props: Props) {
     super(props);
     this.state = { showAddGameModal: false };
@@ -59,13 +60,11 @@ class Header extends React.Component<Props, OwnState> {
   }
 
   private openAddGameModal() {
-    const nextState = produce(this.state, draft => { draft.showAddGameModal = true; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.showAddGameModal = true; });
   }
 
   private closeAddGameModal() {
-    const nextState = produce(this.state, draft => { draft.showAddGameModal = false; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.showAddGameModal = false; });
   }
 
   private renderMenu(): React.ReactNode {

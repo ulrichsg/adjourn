@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import Quest from '../../model/quests/Quest';
 import { deleteQuest, toggleCollapsed, toggleCompleted } from '../../model/quests/QuestActions';
 import CardHeader from '../shared/CardHeader';
-import ActionButton from './ActionButton';
+import ActionButton from '../shared/ActionButton';
 
 interface OwnProps {
   readonly quest: Quest;
@@ -30,7 +30,7 @@ function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchPro
   };
 }
 
-class QuestHeader extends React.Component<Props, {}> {
+class QuestHeader extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.openEditModal = this.openEditModal.bind(this);
@@ -48,11 +48,10 @@ class QuestHeader extends React.Component<Props, {}> {
       deleteQuest: deleteIt,
       dragHandleProps,
     } = this.props;
-    // tslint:disable jsx-key
     const actions = [
-      <ActionButton icon="edit" onClick={ this.openEditModal }/>,
-      <ActionButton icon="delete" onClick={ deleteIt } type="danger"/>,
-      <ActionButton icon="check" onClick={ complete }/>,
+      <ActionButton icon="edit" key={ 'edit_' + quest.id } onClick={ this.openEditModal }/>,
+      <ActionButton icon="delete" key={ 'delete_' + quest.id } onClick={ deleteIt } type="danger"/>,
+      <ActionButton icon="check" key={ 'complete_' + quest.id } onClick={ complete }/>,
     ];
     return (
 
@@ -61,6 +60,7 @@ class QuestHeader extends React.Component<Props, {}> {
                   collapsed={ quest.collapsed }
                   toggleCollapsed={ collapse }
                   actions={ actions }
+                  editing={ false }
                   dragHandleProps={ dragHandleProps }
       />
     );

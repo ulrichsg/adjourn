@@ -3,9 +3,9 @@ import { ButtonType } from 'antd/lib/button';
 import * as React from 'react';
 
 interface Props {
-  icon: string;
-  onClick: () => void;
-  type?: ButtonType | null;
+  readonly icon: string;
+  readonly onClick: () => void;
+  readonly type?: ButtonType | null;
 }
 
 export default class ActionButton extends React.Component<Props, {}> {

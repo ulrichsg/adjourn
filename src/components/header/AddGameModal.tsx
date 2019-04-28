@@ -4,6 +4,7 @@ import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { addGame } from '../../model/games/GameActions';
+import ImmerStateComponent from '../shared/ImmerStateComponent';
 
 interface OwnProps {
   visible: boolean;
@@ -27,7 +28,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   };
 }
 
-class AddGameModal extends React.Component<Props, OwnState> {
+class AddGameModal extends ImmerStateComponent<Props, OwnState> {
   constructor(props: Props) {
     super(props);
     this.state = { title: '', validTitle: true };
@@ -39,8 +40,7 @@ class AddGameModal extends React.Component<Props, OwnState> {
 
   private updateTitle(event: ChangeEvent<HTMLInputElement>) {
     const title = event.target.value;
-    const nextState = produce(this.state, draft => { draft.title = title; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.title = title; });
   }
 
   private submit() {
@@ -53,11 +53,10 @@ class AddGameModal extends React.Component<Props, OwnState> {
   }
 
   private reset() {
-    const nextState = produce(this.state, draft => {
+    this.updateState(draft => {
       draft.title = '';
       draft.validTitle = true;
     });
-    this.setState(nextState);
   }
 
   public render() {

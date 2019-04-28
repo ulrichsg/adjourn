@@ -6,9 +6,11 @@ import KnowledgeItem, { createKnowledgeItem } from './KnowledgeItem';
 
 export default function knowledgeReducer(state: State, action: KnowledgeAction): State {
   return produce(state, (draft: State) => {
+    let i;
+    let item;
     switch (action.type) {
       case KnowledgeActionType.TOGGLE_KNOWLEDGE_ITEM_COLLAPSED:
-        const [i, item] = findKnowledgeItemIndex(draft, action.itemId);
+        [i, item] = findKnowledgeItemIndex(draft, action.itemId);
         if (item) {
           draft.knowledge.items[i].collapsed = !item.collapsed;
         }
@@ -20,6 +22,19 @@ export default function knowledgeReducer(state: State, action: KnowledgeAction):
       case KnowledgeActionType.ADD_KNOWLEDGE_ITEM:
         const newItem = createKnowledgeItem(action.categoryId, action.parentId, action.title, action.content);
         draft.knowledge.items.push(newItem);
+        break;
+      case KnowledgeActionType.DELETE_KNOWLEDGE_ITEM:
+        [i, item] = findKnowledgeItemIndex(draft, action.itemId);
+        if (item) {
+          draft.knowledge.items.splice(i, 1);
+        }
+        break;
+      case KnowledgeActionType.EDIT_KNOWLEDGE_ITEM:
+        [i, item] = findKnowledgeItemIndex(draft, action.itemId);
+        if (item) {
+          draft.knowledge.items[i].title = action.title;
+          draft.knowledge.items[i].content = action.content;
+        }
         break;
     }
   });

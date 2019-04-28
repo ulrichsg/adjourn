@@ -12,11 +12,11 @@ const KbCategoryHeader = styled.div`
 `;
 
 interface OwnProps {
-  category: KnowledgeCategory;
+  readonly category: KnowledgeCategory;
 }
 
 interface StateProps {
-  items: KnowledgeItem[];
+  readonly items: KnowledgeItem[];
 }
 
 type Props = OwnProps & StateProps;
@@ -27,7 +27,7 @@ function mapStateToProps(state: State, ownProps: OwnProps): StateProps {
   };
 }
 
-class KbCategory extends React.Component<Props, {}> {
+class KbCategory extends React.Component<Props> {
   public render() {
     const { category, items } = this.props;
     return (

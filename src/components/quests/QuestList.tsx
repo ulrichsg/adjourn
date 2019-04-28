@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Quest from '../../model/quests/Quest';
 import { changeQuestOrder } from '../../model/quests/QuestActions';
 import State from '../../model/State';
+import ImmerStateComponent from '../shared/ImmerStateComponent';
 import AddQuestModal from './AddQuestModal';
 import EditQuestModal from './EditQuestModal';
 import QuestCard from './QuestCard';
@@ -72,7 +73,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   changeQuestOrder: (questId: string, newIndex: number) => dispatch(changeQuestOrder(questId, newIndex)),
 });
 
-class QuestList extends React.Component<Props, OwnState> {
+class QuestList extends ImmerStateComponent<Props, OwnState> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -92,33 +93,27 @@ class QuestList extends React.Component<Props, OwnState> {
   }
 
   private openAddQuestModal() {
-    const nextState = produce(this.state, draft => { draft.adding = true; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.adding = true; });
   }
 
   private closeAddQuestModal() {
-    const nextState = produce(this.state, draft => { draft.adding = false; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.adding = false; });
   }
 
   private openEditQuestModal(quest: Quest) {
-    const nextState = produce(this.state, draft => { draft.editedQuest = quest; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.editedQuest = quest; });
   }
 
   private closeEditQuestModal() {
-    const nextState = produce(this.state, draft => { draft.editedQuest = null; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.editedQuest = null; });
   }
 
   private toggleShowCompleted() {
-    const nextState = produce(this.state, draft => { draft.showCompleted = !this.state.showCompleted; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.showCompleted = !this.state.showCompleted; });
   }
 
   private filter(searchString: string) {
-    const nextState = produce(this.state, draft => { draft.searchString = searchString; });
-    this.setState(nextState);
+    this.updateState(draft => { draft.searchString = searchString; });
   }
 
   private handleDragDrop(result: DropResult) {
