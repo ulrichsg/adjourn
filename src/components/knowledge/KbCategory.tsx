@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
 import State from '../../model/State';
+import KbCategoryHeader from './KbCategoryHeader';
 import KbItem from './KbItem';
 
-const KbCategoryHeader = styled.div`
-  font-weight: bold;
-  font-size: 1.5em;
+const KbEntry = styled.li`
+  margin-bottom: 10px;
 `;
 
 interface OwnProps {
@@ -31,10 +31,10 @@ class KbCategory extends React.Component<Props> {
   public render() {
     const { category, items } = this.props;
     return (
-      <li>
-        <KbCategoryHeader>{ category.name }</KbCategoryHeader>
+      <KbEntry>
+        <KbCategoryHeader category={ category }/>
         { items.map(item => <KbItem item={ item } key={ item.id }/>) }
-      </li>
+      </KbEntry>
     );
   }
 }

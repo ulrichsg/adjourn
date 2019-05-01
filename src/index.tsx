@@ -43,6 +43,7 @@ const items = [
   createKnowledgeItem(categories[0].id, null, 'Sorcerer\'s Isle', 'Home of Yarash'),
   place2,
   createKnowledgeItem(categories[0].id, place2.id, 'City Hall', 'Get quests here'),
+  createKnowledgeItem(categories[0].id, place2.id, 'Temple of Tempus', 'Waaagh'),
 ];
 
 const mockState = {

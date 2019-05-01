@@ -1,6 +1,7 @@
 export type KnowledgeAction =
   | ToggleKnowledgeItemCollapsed
   | AddKnowledgeCategory
+  | RenameKnowledgeCategory
   | AddKnowledgeItem
   | DeleteKnowledgeItem
   | EditKnowledgeItem;
@@ -8,6 +9,7 @@ export type KnowledgeAction =
 export enum KnowledgeActionType {
   TOGGLE_KNOWLEDGE_ITEM_COLLAPSED = 'toggle_knowledge_item_collapsed',
   ADD_KNOWLEDGE_CATEGORY = 'add_knowledge_category',
+  RENAME_KNOWLEDGE_CATEGORY = 'rename_knowledge_category',
   ADD_KNOWLEDGE_ITEM = 'add_knowledge_item',
   DELETE_KNOWLEDGE_ITEM = 'delete_knowledge_item',
   EDIT_KNOWLEDGE_ITEM = 'edit_knowledge_item',
@@ -16,6 +18,7 @@ export enum KnowledgeActionType {
 export const knowledgeActionTypes: string[] = [
   KnowledgeActionType.TOGGLE_KNOWLEDGE_ITEM_COLLAPSED,
   KnowledgeActionType.ADD_KNOWLEDGE_CATEGORY,
+  KnowledgeActionType.RENAME_KNOWLEDGE_CATEGORY,
   KnowledgeActionType.ADD_KNOWLEDGE_ITEM,
   KnowledgeActionType.DELETE_KNOWLEDGE_ITEM,
   KnowledgeActionType.EDIT_KNOWLEDGE_ITEM,
@@ -43,6 +46,20 @@ export function addKnowledgeCategory(gameId: string, name: string): AddKnowledge
   return {
     type: KnowledgeActionType.ADD_KNOWLEDGE_CATEGORY,
     gameId,
+    name,
+  };
+}
+
+export interface RenameKnowledgeCategory {
+  type: KnowledgeActionType.RENAME_KNOWLEDGE_CATEGORY;
+  categoryId: string;
+  name: string;
+}
+
+export function renameKnowledgeCategory(categoryId: string, name: string): RenameKnowledgeCategory {
+  return {
+    type: KnowledgeActionType.RENAME_KNOWLEDGE_CATEGORY,
+    categoryId,
     name,
   };
 }

@@ -1,4 +1,3 @@
-import produce from 'immer';
 import React from 'react';
 
 import { Button, Dropdown, Icon, Menu, PageHeader } from 'antd';

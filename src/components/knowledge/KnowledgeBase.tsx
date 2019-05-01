@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
 import State from '../../model/State';
+import AddCategoryForm from './AddCategoryForm';
 import KbCategory from './KbCategory';
 
 const Categories = styled.ul`
@@ -25,9 +26,12 @@ class KnowledgeBase extends React.Component<StateProps> {
   public render() {
     const { categories } = this.props;
     return (
-      <Categories>
-        { categories.map(category => <KbCategory category={category} key={category.id}/>) }
-      </Categories>
+      <React.Fragment>
+        <Categories>
+          { categories.map(category => <KbCategory category={category} key={category.id}/>) }
+        </Categories>
+        <AddCategoryForm/>
+      </React.Fragment>
     );
   };
 }

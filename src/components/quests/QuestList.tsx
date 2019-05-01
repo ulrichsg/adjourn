@@ -1,5 +1,4 @@
 import { Button, Icon, Input, Tooltip } from 'antd';
-import produce from 'immer';
 import React from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
