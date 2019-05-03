@@ -1,58 +1,45 @@
 import React from 'react';
-
-import { Button, Dropdown, Icon, Menu, PageHeader } from 'antd';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import Game from '../../model/games/Game';
-import { switchGame } from '../../model/games/GameActions';
-import State from '../../model/State';
+import styled from 'styled-components';
 import ImmerStateComponent from '../shared/ImmerStateComponent';
 import AddGameModal from './AddGameModal';
-// import styled from 'styled-components';
+import GameMenu from './GameMenu';
 
-// tslint:disable-next-line no-var-requires
-// require('typeface-galdeano');
-//
-// const HeaderBar = styled(AppBar)`
-//   background-color: lightgray;
-// `;
-//
-// const Brand = styled.p`
-//   font-family: Galdeano, sans-serif;
-//   color: black;
-// `;
+const MyTitleBar = styled.div`
+  line-height: 1.5em;
+  vertical-align: middle;
+  background-color: #b3e5fc;
+  margin-bottom: 10px;
 
-interface StateProps {
-  readonly games: Game[];
-  readonly gameId: string;
-}
+  .content {
+    display: flex;
+    justify-content: space-between;
+    width: 1170px;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
 
-interface DispatchProps {
-  readonly switchGame: (id: string) => () => void;
-}
+    .title {
+      font-weight: bold;
+      font-size: 120%;
+    }
+
+    a {
+      color: black;
+    }
+
+    a:hover {
+      color: #546e7a;
+    }
+  }
+`;
 
 interface OwnState {
   readonly showAddGameModal: boolean;
 }
 
-function mapStateToProps(state: State): StateProps {
-  return {
-    games: state.games,
-    gameId: state.activeGameId,
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
-  return {
-    switchGame: (id: string) => () => dispatch(switchGame(id)),
-  };
-}
-
-type Props = StateProps & DispatchProps;
-
-class Header extends ImmerStateComponent<Props, OwnState> {
-  constructor(props: Props) {
-    super(props);
+export default class Header extends ImmerStateComponent<{}, OwnState> {
+  constructor() {
+    super({});
     this.state = { showAddGameModal: false };
     this.openAddGameModal = this.openAddGameModal.bind(this);
     this.closeAddGameModal = this.closeAddGameModal.bind(this);
@@ -66,44 +53,18 @@ class Header extends ImmerStateComponent<Props, OwnState> {
     this.updateState(draft => { draft.showAddGameModal = false; });
   }
 
-  private renderMenu(): React.ReactNode {
-    const games = this.props.games;
-    const currentGame = games.find(game => game.id === this.props.gameId);
-    if (!currentGame) {
-      return <Button>Add game</Button>;
-    }
-
-    const menuItems = games.map(game => (
-      <Menu.Item key={ game.id } onClick={ this.props.switchGame(game.id) }>
-        { game.name }
-      </Menu.Item>
-    ));
-    const menu = (
-      <Menu selectedKeys={ [currentGame.id] }>
-        { menuItems }
-        <Menu.Divider/>
-        <Menu.Item key="add_game" onClick={ this.openAddGameModal }>Add Game</Menu.Item>
-      </Menu>
-    );
-    return (
-      <Dropdown overlay={menu} trigger={['click']}>
-        <a className="ant-dropdown-link" href="#">
-          {currentGame.name}
-          <Icon type="down"/>
-        </a>
-      </Dropdown>
-    );
-  }
-
   public render() {
-    const gameMenu = this.renderMenu();
     return (
       <React.Fragment>
-        <PageHeader backIcon={false} title="Adjourn" subTitle={gameMenu}/>
+        <MyTitleBar>
+          <div className="content">
+            <div className="title">AdJourn</div>
+            <GameMenu openAddGameModal={ this.openAddGameModal }/>
+            <a href="https://github.com/ulrichsg/adjourn">GitHub</a>
+          </div>
+        </MyTitleBar>
         <AddGameModal visible={this.state.showAddGameModal} hide={this.closeAddGameModal}/>
       </React.Fragment>
     );
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);

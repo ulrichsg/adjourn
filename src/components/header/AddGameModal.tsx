@@ -1,5 +1,4 @@
 import { Form, Input, Modal } from 'antd';
-import produce from 'immer';
 import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -75,10 +74,10 @@ class AddGameModal extends ImmerStateComponent<Props, OwnState> {
              onOk={ this.submit }
              onCancel={ this.close }
              afterClose={ this.reset }
-             destroyOnClose={true}
-             align={({})}
+             destroyOnClose={ true }
+             align={ ({}) }
       >
-        <Form {...formItemLayout} hideRequiredMark={true}>
+        <Form { ...formItemLayout } hideRequiredMark={ true }>
           <Form.Item
             label="Title"
             validateStatus={this.state.validTitle ? '' : 'error'}

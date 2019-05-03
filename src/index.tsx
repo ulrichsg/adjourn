@@ -63,7 +63,6 @@ render((
       <React.Fragment>
         <Header/>
         <Body>
-          <h1>{ game.name }</h1>
           <Row type="flex" gutter={40}>
             <Col xs={24} md={12}>
               <KnowledgeBase/>
