@@ -7,6 +7,7 @@ import {
   toggleKnowledgeItemCollapsed,
 } from '../../model/knowledge/KnowledgeActions';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
+import State from '../../model/State';
 import ActionButton from '../shared/ActionButton';
 import CardHeader from '../shared/CardHeader';
 
@@ -20,13 +21,21 @@ interface OwnProps {
   readonly cancel: () => void;
 }
 
+interface StateProps {
+  readonly hasChildren: boolean;
+}
+
 interface DispatchProps {
   readonly toggleCollapsed: () => void;
   readonly addChildItem: () => void;
   readonly deleteMe: () => void;
 }
 
-type Props = OwnProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
+
+function mapStateToProps(state: State, ownProps: OwnProps): StateProps {
+  return { hasChildren: state.knowledge.items.some(item => item.parentId === ownProps.item.id) };
+}
 
 function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchProps {
   const itemId = ownProps.item.id;
@@ -48,6 +57,7 @@ class KbItemHeader extends React.Component<Props> {
       submit,
       cancel,
       toggleCollapsed,
+      hasChildren,
       addChildItem,
       deleteMe,
     } = this.props;
@@ -56,7 +66,14 @@ class KbItemHeader extends React.Component<Props> {
       : <ActionButton icon="edit" key={ 'edit_' + item.id } onClick={ startEditing }/>;
     const actions = [
       <ActionButton icon="plus" key={ 'add_child_' + item.id } onClick={ addChildItem }/>,
-      <ActionButton icon="delete" key={ 'delete_' + item.id } onClick={ deleteMe } type="danger"/>,
+      (
+        <ActionButton icon="delete"
+                      key={ 'delete_' + item.id }
+                      onClick={ deleteMe }
+                      type="danger"
+                      disabled={ hasChildren }
+        />
+      ),
       editButton,
     ];
     return (
@@ -74,4 +91,4 @@ class KbItemHeader extends React.Component<Props> {
   }
 }
 
-export default connect(() => ({}), mapDispatchToProps)(KbItemHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(KbItemHeader);

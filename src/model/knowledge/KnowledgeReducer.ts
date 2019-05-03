@@ -32,7 +32,10 @@ export default function knowledgeReducer(state: State, action: KnowledgeAction):
       case KnowledgeActionType.DELETE_KNOWLEDGE_ITEM:
         [i, item] = findKnowledgeItemIndex(draft, action.itemId);
         if (item) {
-          draft.knowledge.items.splice(i, 1);
+          const hasChildren = draft.knowledge.items.some(anItem => anItem.parentId === item.id);
+          if (!hasChildren) {
+            draft.knowledge.items.splice(i, 1);
+          }
         }
         break;
       case KnowledgeActionType.EDIT_KNOWLEDGE_ITEM:
