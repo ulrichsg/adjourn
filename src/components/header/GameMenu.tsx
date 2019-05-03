@@ -60,7 +60,7 @@ class GameMenu extends React.Component<Props> {
     const games = this.props.games;
     const currentGame = games.find(game => game.id === this.props.gameId);
     if (!currentGame) {
-      return <Button>Add game</Button>;
+      return <Button type="primary" onClick={ this.props.openAddGameModal }>Add game</Button>;
     }
 
     const menuItems = games.map(game => (

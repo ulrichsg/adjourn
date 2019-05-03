@@ -46,13 +46,23 @@ const items = [
   createKnowledgeItem(categories[0].id, place2.id, 'Temple of Tempus', 'Waaagh'),
 ];
 
+// const mockState = {
+//   games: [game],
+//   activeGameId: game.id,
+//   quests,
+//   knowledge: {
+//     categories,
+//     items,
+//   },
+// };
+
 const mockState = {
-  games: [game],
-  activeGameId: game.id,
-  quests,
+  games: [],
+  activeGameId: '',
+  quests: [],
   knowledge: {
-    categories,
-    items,
+    categories: [],
+    items: [],
   },
 };
 

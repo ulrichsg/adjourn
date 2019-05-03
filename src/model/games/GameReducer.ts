@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { createKnowledgeCategory } from '../knowledge/KnowledgeCategory';
 import State from '../State';
 import { createGame } from './Game';
 import { GameAction, GameActionType } from './GameActions';
@@ -10,6 +11,8 @@ export default function gameReducer(state: State, action: GameAction): State {
         const game = createGame(action.name);
         draft.games.push(game);
         draft.activeGameId = game.id;
+        const initialCategory = createKnowledgeCategory(game.id, 'Default Category');
+        draft.knowledge.categories.push(initialCategory);
         break;
       case GameActionType.SWITCH_GAME:
         if (draft.games.find(g => g.id === action.id)) {

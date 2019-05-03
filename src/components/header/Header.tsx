@@ -13,6 +13,7 @@ const MyTitleBar = styled.div`
   .content {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 1170px;
     max-width: 90%;
     margin: 0 auto;
