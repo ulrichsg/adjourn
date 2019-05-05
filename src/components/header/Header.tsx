@@ -8,7 +8,7 @@ const MyTitleBar = styled.div`
   line-height: 1.5em;
   vertical-align: middle;
   background-color: #b3e5fc;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 
   .content {
     display: flex;

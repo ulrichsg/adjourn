@@ -3,3 +3,7 @@
 html, body {
   width: 100vw;
 }
+
+#app {
+  height: 100%;
+}

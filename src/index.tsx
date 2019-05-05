@@ -1,13 +1,9 @@
-import { Col, Row } from 'antd';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import styled from 'styled-components';
 import uuid from 'uuid';
-import Header from './components/header/header';
-import KnowledgeBase from './components/knowledge/KnowledgeBase';
-import QuestList from './components/quests/QuestList';
+import App from './components/App';
 import { createKnowledgeCategory } from './model/knowledge/KnowledgeCategory';
 import { createKnowledgeItem } from './model/knowledge/KnowledgeItem';
 import mainReducer from './model/MainReducer';
@@ -16,12 +12,6 @@ import { createQuest } from './model/quests/Quest';
 // tslint:disable no-var-requires
 require('./style.css');
 require('typeface-open-sans');
-
-const Body = styled.div`
-  width: 1170px;
-  max-width: 90%;
-  margin: 0 auto;
-`;
 
 const game = { id: uuid.v4(), name: 'Pool of Radiance' };
 
@@ -70,19 +60,7 @@ const store = createStore(mainReducer, mockState);
 
 render((
     <Provider store={store}>
-      <React.Fragment>
-        <Header/>
-        <Body>
-          <Row type="flex" gutter={40}>
-            <Col xs={24} md={12}>
-              <KnowledgeBase/>
-            </Col>
-            <Col xs={24} md={12}>
-              <QuestList/>
-            </Col>
-          </Row>
-        </Body>
-      </React.Fragment>
+      <App/>
     </Provider>
   ),
     document.getElementById('app'),
