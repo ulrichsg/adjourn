@@ -3,8 +3,13 @@ import React, { ChangeEvent, KeyboardEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
-import { addKnowledgeItem, renameKnowledgeCategory } from '../../model/knowledge/KnowledgeActions';
+import {
+  addKnowledgeItem,
+  deleteKnowledgeCategory,
+  renameKnowledgeCategory,
+} from '../../model/knowledge/KnowledgeActions';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
+import State from '../../model/State';
 import ImmerStateComponent from '../shared/ImmerStateComponent';
 
 const CategoryHeader = styled.div`
@@ -38,16 +43,30 @@ interface OwnProps {
   readonly category: KnowledgeCategory;
 }
 
+interface StateProps {
+  readonly hasEntries: boolean;
+  readonly isOnlyCategoryForGame: boolean;
+}
+
 interface DispatchProps {
   readonly addChildItem: () => void;
   readonly rename: (name: string) => void;
+  readonly deleteMe: () => void;
 }
 
-type Props = OwnProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface OwnState {
   readonly editing: boolean;
   readonly title: string;
+}
+
+function mapStateToProps(state: State, ownProps: OwnProps): StateProps {
+  const { knowledge: kb, activeGameId } = state;
+  return {
+    hasEntries: kb.items.some(item => item.categoryId === ownProps.category.id),
+    isOnlyCategoryForGame: kb.categories.filter(cat => cat.gameId === activeGameId).length === 1,
+  };
 }
 
 function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchProps {
@@ -55,6 +74,7 @@ function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchPro
   return {
     addChildItem: () => dispatch(addKnowledgeItem(categoryId, null, '', '')),
     rename: (name: string) => dispatch(renameKnowledgeCategory(categoryId, name)),
+    deleteMe: () => dispatch(deleteKnowledgeCategory(categoryId)),
   };
 }
 
@@ -91,10 +111,9 @@ class KbCategoryHeader extends ImmerStateComponent<Props, OwnState> {
       });
     }
   }
-
-  public render() {
-    const { category, addChildItem } = this.props;
-    const title = this.state.editing
+  private renderTitle(): React.ReactNode {
+    const name = this.props.category.name;
+    return this.state.editing
       ? (
         <Input value={ this.state.title }
                autoFocus={ true }
@@ -102,18 +121,44 @@ class KbCategoryHeader extends ImmerStateComponent<Props, OwnState> {
                onKeyDown={ this.handleKeyDown }
         />
       )
-      : <div>{ category.name }</div>;
+      : <div>{ name }</div>;
+  }
+
+  private renderDeleteButton(): React.ReactNode {
+    const { deleteMe, hasEntries, isOnlyCategoryForGame } = this.props;
+    const canDelete = !hasEntries && !isOnlyCategoryForGame;
+    let tooltip;
+    if (canDelete) {
+      tooltip = 'Delete Category';
+    } else if (hasEntries) {
+      tooltip = 'Delete all entries first';
+    } else {
+      tooltip = 'Cannot delete the last category';
+    }
+    return (
+      <Tooltip title={ tooltip }>
+        <Button shape="circle" type="danger" disabled={ !canDelete } onClick={ deleteMe }>
+          <Icon type="delete"/>
+        </Button>
+      </Tooltip>
+    );
+  }
+
+  public render() {
+    const title = this.renderTitle();
+    const deleteButton = this.renderDeleteButton();
     return (
       <CategoryHeader>
         { title }
         <CategoryActions>
+          { deleteButton }
           <Tooltip title="Rename Category">
             <Button shape="circle" onClick={ this.startEditing }>
               <Icon type="edit"/>
             </Button>
           </Tooltip>
           <Tooltip title="Add Item">
-            <AddItemButton type="primary" shape="circle" onClick={ addChildItem }>
+            <AddItemButton type="primary" shape="circle" onClick={ this.props.addChildItem }>
               <Icon type="plus"/>
             </AddItemButton>
           </Tooltip>
@@ -123,4 +168,4 @@ class KbCategoryHeader extends ImmerStateComponent<Props, OwnState> {
   }
 }
 
-export default connect(() => ({}), mapDispatchToProps)(KbCategoryHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(KbCategoryHeader);

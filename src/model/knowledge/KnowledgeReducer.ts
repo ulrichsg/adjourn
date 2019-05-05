@@ -25,6 +25,16 @@ export default function knowledgeReducer(state: State, action: KnowledgeAction):
           draft.knowledge.categories[i].name = action.name;
         }
         break;
+      case KnowledgeActionType.DELETE_KNOWLEDGE_CATEGORY:
+        [i, category] = findKnowledgeCategoryIndex(draft, action.categoryId);
+        if (category) {
+          const hasEntries = draft.knowledge.items.some(anItem => anItem.categoryId === category.id);
+          const allCategories = draft.knowledge.categories.filter(cat => cat.gameId === draft.activeGameId);
+          if (!hasEntries && allCategories.length > 1) {
+            draft.knowledge.categories.splice(i, 1);
+          }
+        }
+        break;
       case KnowledgeActionType.ADD_KNOWLEDGE_ITEM:
         const newItem = createKnowledgeItem(action.categoryId, action.parentId, action.title, action.content);
         draft.knowledge.items.push(newItem);
