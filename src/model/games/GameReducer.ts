@@ -1,6 +1,6 @@
 import produce from 'immer';
+import State from '..';
 import { createKnowledgeCategory } from '../knowledge/KnowledgeCategory';
-import State from '../State';
 import { createGame } from './Game';
 import { GameAction, GameActionType } from './GameActions';
 

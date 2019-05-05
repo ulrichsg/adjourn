@@ -3,13 +3,13 @@ import React, { ChangeEvent, KeyboardEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
+import { State } from '../../model';
 import {
   addKnowledgeItem,
   deleteKnowledgeCategory,
   renameKnowledgeCategory,
 } from '../../model/knowledge/KnowledgeActions';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
-import State from '../../model/State';
 import ImmerStateComponent from '../shared/ImmerStateComponent';
 
 const CategoryHeader = styled.div`

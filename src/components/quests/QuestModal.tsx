@@ -1,5 +1,4 @@
 import { Form, Input, Modal } from 'antd';
-import produce from 'immer';
 import React, { ChangeEvent } from 'react';
 import ImmerStateComponent from '../shared/ImmerStateComponent';
 

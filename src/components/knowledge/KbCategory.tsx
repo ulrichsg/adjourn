@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { State } from '../../model';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
-import State from '../../model/State';
 import KbCategoryHeader from './KbCategoryHeader';
 import KbItem from './KbItem';
 

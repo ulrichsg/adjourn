@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { State } from '../../model';
 import {
   addKnowledgeItem,
   deleteKnowledgeItem,
   toggleKnowledgeItemCollapsed,
 } from '../../model/knowledge/KnowledgeActions';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
-import State from '../../model/State';
 import ActionButton from '../shared/ActionButton';
 import CardHeader from '../shared/CardHeader';
 

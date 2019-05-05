@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { State } from '../../model';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
-import State from '../../model/State';
 import AddCategoryForm from './AddCategoryForm';
 import KbCategory from './KbCategory';
 

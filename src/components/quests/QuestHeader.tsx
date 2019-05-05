@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Quest from '../../model/quests/Quest';
 import { deleteQuest, toggleCollapsed, toggleCompleted } from '../../model/quests/QuestActions';
-import CardHeader from '../shared/CardHeader';
 import ActionButton from '../shared/ActionButton';
+import CardHeader from '../shared/CardHeader';
 
 interface OwnProps {
   readonly quest: Quest;

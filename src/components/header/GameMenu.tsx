@@ -3,9 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
+import { State } from '../../model';
 import Game from '../../model/games/Game';
 import { switchGame } from '../../model/games/GameActions';
-import State from '../../model/State';
 
 const GameSwitch = styled.a`
   color: black;

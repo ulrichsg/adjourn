@@ -3,8 +3,8 @@ import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
+import { State } from '../../model';
 import { addKnowledgeCategory } from '../../model/knowledge/KnowledgeActions';
-import State from '../../model/State';
 import ImmerStateComponent from '../shared/ImmerStateComponent';
 
 const InputField = styled(Input)`

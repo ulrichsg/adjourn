@@ -1,10 +1,23 @@
+import Game from './games/Game';
 import { GameAction, gameActionTypes } from './games/GameActions';
 import gameReducer from './games/GameReducer';
 import { KnowledgeAction, knowledgeActionTypes } from './knowledge/KnowledgeActions';
+import KnowledgeCategory from './knowledge/KnowledgeCategory';
+import KnowledgeItem from './knowledge/KnowledgeItem';
 import knowledgeReducer from './knowledge/KnowledgeReducer';
+import Quest from './quests/Quest';
 import { QuestAction, questActionTypes } from './quests/QuestActions';
 import questReducer from './quests/QuestReducer';
-import State from './State';
+
+export interface State {
+  games: Game[];
+  activeGameId: string;
+  quests: Quest[];
+  knowledge: {
+    categories: KnowledgeCategory[];
+    items: KnowledgeItem[];
+  };
+}
 
 const initialState: State = {
   games: [],
@@ -18,7 +31,7 @@ const initialState: State = {
 
 type Action = GameAction | QuestAction | KnowledgeAction;
 
-export default function mainReducer(state: State = initialState, action: Action): State {
+export function reducer(state: State = initialState, action: Action): State {
   if (gameActionTypes.includes(action.type)) {
     return gameReducer(state, action as GameAction);
   }

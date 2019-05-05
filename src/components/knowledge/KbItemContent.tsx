@@ -2,8 +2,8 @@ import { Input } from 'antd';
 import React, { ChangeEvent, KeyboardEvent } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { State } from '../../model';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
-import State from '../../model/State';
 
 const ItemContent = styled.div`
   &.withChildren {

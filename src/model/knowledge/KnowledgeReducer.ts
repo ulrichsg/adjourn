@@ -1,5 +1,5 @@
 import produce from 'immer';
-import State from '../State';
+import State from '..';
 import { KnowledgeAction, KnowledgeActionType } from './KnowledgeActions';
 import KnowledgeCategory, { createKnowledgeCategory } from './KnowledgeCategory';
 import KnowledgeItem, { createKnowledgeItem } from './KnowledgeItem';
