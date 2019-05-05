@@ -22,7 +22,7 @@ export default function questReducer(state: State, action: QuestAction): State {
         break;
       case QuestActionType.ADD_QUEST:
         const nextSortIndex = draft.quests.filter(q => q.gameId === action.gameId).length;
-        quest = createQuest(action.gameId, action.title, action.notes, nextSortIndex);
+        quest = createQuest(action.gameId, nextSortIndex);
         draft.quests.push(quest);
         break;
       case QuestActionType.EDIT_QUEST:

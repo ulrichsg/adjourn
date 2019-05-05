@@ -10,12 +10,12 @@ export default interface Quest {
   sortIndex: number;
 }
 
-export function createQuest(gameId: string, title: string, notes: string, sortIndex: number): Quest {
+export function createQuest(gameId: string, sortIndex: number): Quest {
   return {
     id: uuid.v4(),
     gameId,
-    title,
-    notes,
+    title: '',
+    notes: '',
     done: false,
     collapsed: false,
     sortIndex,

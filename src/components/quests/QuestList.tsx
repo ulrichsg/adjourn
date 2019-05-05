@@ -6,10 +6,8 @@ import { Dispatch } from 'redux';
 import styled from 'styled-components';
 import { State } from '../../model';
 import Quest from '../../model/quests/Quest';
-import { changeQuestOrder } from '../../model/quests/QuestActions';
+import { addQuest, changeQuestOrder } from '../../model/quests/QuestActions';
 import ImmerStateComponent from '../shared/ImmerStateComponent';
-import AddQuestModal from './AddQuestModal';
-import EditQuestModal from './EditQuestModal';
 import QuestCard from './QuestCard';
 
 const ListHeader = styled.div`
@@ -51,6 +49,7 @@ interface StateProps {
 
 interface DispatchProps {
   readonly changeQuestOrder: (questId: string, newIndex: number) => void;
+  readonly addQuest: (gameId: string) => void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -58,9 +57,6 @@ type Props = StateProps & DispatchProps;
 interface OwnState {
   readonly showCompleted: boolean;
   readonly searchString: string;
-  readonly adding: boolean;
-  readonly editing: boolean;
-  readonly editedQuest: Quest | null;
 }
 
 const mapStateToProps = (state: State): StateProps => ({
@@ -70,6 +66,7 @@ const mapStateToProps = (state: State): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   changeQuestOrder: (questId: string, newIndex: number) => dispatch(changeQuestOrder(questId, newIndex)),
+  addQuest: (gameId: string) => dispatch(addQuest(gameId)),
 });
 
 class QuestList extends ImmerStateComponent<Props, OwnState> {
@@ -78,33 +75,10 @@ class QuestList extends ImmerStateComponent<Props, OwnState> {
     this.state = {
       showCompleted: false,
       searchString: '',
-      adding: false,
-      editing: false,
-      editedQuest: null,
     };
-    this.openAddQuestModal = this.openAddQuestModal.bind(this);
-    this.closeAddQuestModal = this.closeAddQuestModal.bind(this);
-    this.openEditQuestModal = this.openEditQuestModal.bind(this);
-    this.closeEditQuestModal = this.closeEditQuestModal.bind(this);
     this.toggleShowCompleted = this.toggleShowCompleted.bind(this);
     this.filter = this.filter.bind(this);
     this.handleDragDrop = this.handleDragDrop.bind(this);
-  }
-
-  private openAddQuestModal() {
-    this.updateState(draft => { draft.adding = true; });
-  }
-
-  private closeAddQuestModal() {
-    this.updateState(draft => { draft.adding = false; });
-  }
-
-  private openEditQuestModal(quest: Quest) {
-    this.updateState(draft => { draft.editedQuest = quest; });
-  }
-
-  private closeEditQuestModal() {
-    this.updateState(draft => { draft.editedQuest = null; });
   }
 
   private toggleShowCompleted() {
@@ -148,34 +122,31 @@ class QuestList extends ImmerStateComponent<Props, OwnState> {
   }
 
   public render() {
+    const createQuest = () => this.props.addQuest(this.props.gameId);
     const { showCompleted } = this.state;
     const quests = this.filterQuests();
     const listContent = quests.length > 0
-      ? quests.map(quest => (<QuestCard quest={quest} key={quest.id} edit={this.openEditQuestModal}/>))
+      ? quests.map(quest => (<QuestCard quest={ quest } key={ quest.id }/>))
       : <p>No quests here.</p>;
     return (
-      <DragDropContext onDragEnd={this.handleDragDrop}>
+      <DragDropContext onDragEnd={ this.handleDragDrop }>
         <div className="quests">
           <ListHeader>
             <div>Quests</div>
             <ListActions>
-              <Input.Search placeholder="Filter" onSearch={this.filter} style={{ width: 200 }}/>
+              <Input.Search placeholder="Filter" onSearch={ this.filter } style={{ width: 200 }}/>
               <Tooltip title={showCompleted ? 'Hide Completed' : 'Show Completed'}>
                 <Button type={showCompleted ? 'default' : 'dashed'} shape="circle" onClick={this.toggleShowCompleted}>
                   <Icon type="check"/>
                 </Button>
               </Tooltip>
               <Tooltip title="Add Quest">
-                <AddQuestButton type="primary" shape="circle" onClick={this.openAddQuestModal}>
+                <AddQuestButton type="primary" shape="circle" onClick={ createQuest }>
                   <Icon type="plus"/>
                 </AddQuestButton>
               </Tooltip>
             </ListActions>
           </ListHeader>
-          <AddQuestModal visible={this.state.adding} hide={this.closeAddQuestModal}/>
-          <EditQuestModal quest={this.state.editedQuest}
-                          hide={this.closeEditQuestModal}
-          />
           <Droppable droppableId="quests">
             {provided => (
               <QuestCards ref={provided.innerRef} {...provided.droppableProps}>

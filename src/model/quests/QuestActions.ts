@@ -54,17 +54,13 @@ export interface AddQuest {
   type: QuestActionType.ADD_QUEST;
   questId: string;
   gameId: string;
-  title: string;
-  notes: string;
 }
 
-export function addQuest(gameId: string, title: string, notes: string): AddQuest {
+export function addQuest(gameId: string): AddQuest {
   return {
     type: QuestActionType.ADD_QUEST,
     questId: uuid.v4(),
     gameId,
-    title,
-    notes,
   };
 }
 

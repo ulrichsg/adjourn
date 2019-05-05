@@ -9,6 +9,12 @@ import CardHeader from '../shared/CardHeader';
 
 interface OwnProps {
   readonly quest: Quest;
+  readonly title: string;
+  readonly editing: boolean;
+  readonly startEditing: () => void;
+  readonly updateTitle: (title: string) => void;
+  readonly submit: () => void;
+  readonly cancel: () => void;
   readonly edit: (quest: Quest) => void;
   readonly dragHandleProps: DraggableProvidedDragHandleProps | null;
 }
@@ -33,34 +39,37 @@ function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchPro
 class QuestHeader extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.openEditModal = this.openEditModal.bind(this);
-  }
-
-  private openEditModal() {
-    this.props.edit(this.props.quest);
   }
 
   public render(): ReactNode {
     const {
       quest,
+      title,
+      editing,
+      startEditing,
+      updateTitle,
+      submit,
+      cancel,
       toggleCollapsed: collapse,
       toggleCompleted: complete,
       deleteQuest: deleteIt,
       dragHandleProps,
     } = this.props;
     const actions = [
-      <ActionButton icon="edit" key={ 'edit_' + quest.id } onClick={ this.openEditModal }/>,
+      <ActionButton icon="edit" key={ 'edit_' + quest.id } onClick={ startEditing }/>,
       <ActionButton icon="delete" key={ 'delete_' + quest.id } onClick={ deleteIt } type="danger"/>,
       <ActionButton icon="check" key={ 'complete_' + quest.id } onClick={ complete }/>,
     ];
     return (
-
-      <CardHeader title={ quest.title }
+      <CardHeader title={ title }
                   backgroundColor={ quest.done ? '#a5d6a7' : undefined }
                   collapsed={ quest.collapsed }
                   toggleCollapsed={ collapse }
                   actions={ actions }
-                  editing={ false }
+                  editing={ editing }
+                  update={ updateTitle }
+                  submit={ submit }
+                  cancel={ cancel }
                   dragHandleProps={ dragHandleProps }
       />
     );

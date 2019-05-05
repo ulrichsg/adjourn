@@ -93,8 +93,10 @@ class KbItem extends ImmerStateComponent<Props, OwnState> {
   }
 
   private submitChanges() {
-    this.props.edit(this.state.title, this.state.content);
-    this.updateState(draft => { draft.editing = false; });
+    if (this.state.title.length > 0) {
+      this.props.edit(this.state.title, this.state.content);
+      this.updateState(draft => { draft.editing = false; });
+    }
   }
 
   private renderBody(): React.ReactNode {

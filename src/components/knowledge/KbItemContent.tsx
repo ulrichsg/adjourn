@@ -1,9 +1,9 @@
-import { Input } from 'antd';
-import React, { ChangeEvent, KeyboardEvent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { State } from '../../model';
 import KnowledgeItem from '../../model/knowledge/KnowledgeItem';
+import EditableText from '../shared/EditableText';
 
 const ItemContent = styled.div`
   &.withChildren {
@@ -31,32 +31,18 @@ function mapStateToProps(state: State, ownProps: OwnProps): StateProps {
 }
 
 class KbItemContent extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    this.update = this.update.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
-
-  private update(event: ChangeEvent<HTMLTextAreaElement>) {
-    this.props.updateContent(event.target.value);
-  }
-
-  private handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (['Escape', 'Esc'].includes(event.key)) {
-      this.props.cancelEditing();
-    }
-    if (event.key === 'Enter' && event.shiftKey) {
-      this.props.submit();
-    }
-  }
-
   public render() {
-    const { item, editing, content, hasChildren } = this.props;
-    const element = editing
-      ? <Input.TextArea value={ content } tabIndex={ 2 } onChange={ this.update } onKeyDown={ this.handleKeyDown }/>
-      : <div>{ item.content }</div>
-    ;
-    return <ItemContent className={ hasChildren ? 'withChildren' : '' }>{ element }</ItemContent>;
+    const { editing, content, updateContent, cancelEditing, submit, hasChildren } = this.props;
+    return (
+      <ItemContent className={ hasChildren ? 'withChildren' : '' }>
+        <EditableText content={ content }
+                      editing={ editing }
+                      update={ updateContent }
+                      submit={ submit }
+                      cancel={ cancelEditing }
+        />
+      </ItemContent>
+    );
   }
 }
 
