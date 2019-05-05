@@ -7093,11 +7093,6 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typeface-galdeano@^0.0.71:
-  version "0.0.71"
-  resolved "https://registry.yarnpkg.com/typeface-galdeano/-/typeface-galdeano-0.0.71.tgz#c58a272d048a729ddac4b92e72d968212a2d7e7b"
-  integrity sha512-z6N+Xjcgs4ttbdUeY4uTdsg7RzopXF1+/G3ASNFOJrQxZ+v2P32A+n5WZyCxkirE5FQ3me0DDi+8xXk/bjvpeg==
-
 typescript@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.2.tgz#9ed4e6475d906f589200193be056f5913caed481"
