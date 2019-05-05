@@ -4,6 +4,7 @@ export default interface KnowledgeCategory {
   id: string;
   gameId: string;
   name: string;
+  collapsed: boolean;
 }
 
 export function createKnowledgeCategory(gameId: string, name: string): KnowledgeCategory {
@@ -11,5 +12,6 @@ export function createKnowledgeCategory(gameId: string, name: string): Knowledge
     id: uuid.v4(),
     gameId,
     name,
+    collapsed: false,
   };
 }

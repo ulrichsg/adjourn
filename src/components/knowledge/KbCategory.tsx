@@ -33,7 +33,7 @@ class KbCategory extends React.Component<Props> {
     return (
       <KbEntry>
         <KbCategoryHeader category={ category }/>
-        { items.map(item => <KbItem item={ item } key={ item.id }/>) }
+        { category.collapsed || items.map(item => <KbItem item={ item } key={ item.id }/>) }
       </KbEntry>
     );
   }

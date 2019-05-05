@@ -13,7 +13,6 @@ import { reducer } from './model';
 
 // tslint:disable no-var-requires
 require('./style.css');
-require('typeface-open-sans');
 
 const persistConfig = {
   key: 'root',
@@ -28,12 +27,13 @@ const persistedReducer = persistReducer(persistConfig, reducer);
 const store = createStore(persistedReducer);
 const persistor = persistStore(store);
 
-render((
+render(
+  (
     <Provider store={store}>
       <PersistGate persistor={ persistor }>
         <App/>
       </PersistGate>
     </Provider>
   ),
-    document.getElementById('app'),
+  document.getElementById('app'),
 );

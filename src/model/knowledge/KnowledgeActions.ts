@@ -1,5 +1,6 @@
 export type KnowledgeAction =
   | ToggleKnowledgeItemCollapsed
+  | ToggleKnowledgeCategoryCollapsed
   | AddKnowledgeCategory
   | RenameKnowledgeCategory
   | DeleteKnowledgeCategory
@@ -9,6 +10,7 @@ export type KnowledgeAction =
 
 export enum KnowledgeActionType {
   TOGGLE_KNOWLEDGE_ITEM_COLLAPSED = 'toggle_knowledge_item_collapsed',
+  TOGGLE_KNOWLEDGE_CATEGORY_COLLAPSED = 'toggle_knowledge_category_collapsed',
   ADD_KNOWLEDGE_CATEGORY = 'add_knowledge_category',
   RENAME_KNOWLEDGE_CATEGORY = 'rename_knowledge_category',
   DELETE_KNOWLEDGE_CATEGORY = 'delete_knowledge_category',
@@ -19,6 +21,7 @@ export enum KnowledgeActionType {
 
 export const knowledgeActionTypes: string[] = [
   KnowledgeActionType.TOGGLE_KNOWLEDGE_ITEM_COLLAPSED,
+  KnowledgeActionType.TOGGLE_KNOWLEDGE_CATEGORY_COLLAPSED,
   KnowledgeActionType.ADD_KNOWLEDGE_CATEGORY,
   KnowledgeActionType.RENAME_KNOWLEDGE_CATEGORY,
   KnowledgeActionType.DELETE_KNOWLEDGE_CATEGORY,
@@ -36,6 +39,18 @@ export function toggleKnowledgeItemCollapsed(itemId: string): ToggleKnowledgeIte
   return {
     type: KnowledgeActionType.TOGGLE_KNOWLEDGE_ITEM_COLLAPSED,
     itemId,
+  };
+}
+
+export interface ToggleKnowledgeCategoryCollapsed {
+  type: KnowledgeActionType.TOGGLE_KNOWLEDGE_CATEGORY_COLLAPSED;
+  categoryId: string;
+}
+
+export function toggleKnowledgeCategoryCollapsed(categoryId: string): ToggleKnowledgeCategoryCollapsed {
+  return {
+    type: KnowledgeActionType.TOGGLE_KNOWLEDGE_CATEGORY_COLLAPSED,
+    categoryId,
   };
 }
 

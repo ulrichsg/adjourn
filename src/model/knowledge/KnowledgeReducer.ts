@@ -15,6 +15,12 @@ export default function knowledgeReducer(state: State, action: KnowledgeAction):
           draft.knowledge.items[i].collapsed = !item.collapsed;
         }
         break;
+      case KnowledgeActionType.TOGGLE_KNOWLEDGE_CATEGORY_COLLAPSED:
+        [i, category] = findKnowledgeCategoryIndex(draft, action.categoryId);
+        if (category) {
+          draft.knowledge.categories[i].collapsed = !category.collapsed;
+        }
+        break;
       case KnowledgeActionType.ADD_KNOWLEDGE_CATEGORY:
         const newCategory = createKnowledgeCategory(action.gameId, action.name);
         draft.knowledge.categories.push(newCategory);

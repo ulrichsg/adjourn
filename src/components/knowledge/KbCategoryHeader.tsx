@@ -7,16 +7,26 @@ import { State } from '../../model';
 import {
   addKnowledgeItem,
   deleteKnowledgeCategory,
-  renameKnowledgeCategory,
+  renameKnowledgeCategory, toggleKnowledgeCategoryCollapsed,
 } from '../../model/knowledge/KnowledgeActions';
 import KnowledgeCategory from '../../model/knowledge/KnowledgeCategory';
 import ImmerStateComponent from '../shared/ImmerStateComponent';
+
+const CollapseSwitch = styled.div`
+  margin: 0 5px;
+`;
 
 const CategoryHeader = styled.div`
   display: flex;
   font-weight: bold;
   font-size: 1.5em;
   margin-bottom: 10px;
+`;
+
+const CategoryTitle = styled.div`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const CategoryActions = styled.div`
@@ -51,6 +61,7 @@ interface StateProps {
 interface DispatchProps {
   readonly addChildItem: () => void;
   readonly rename: (name: string) => void;
+  readonly toggleCollapsed: () => void;
   readonly deleteMe: () => void;
 }
 
@@ -74,6 +85,7 @@ function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchPro
   return {
     addChildItem: () => dispatch(addKnowledgeItem(categoryId, null, '', '')),
     rename: (name: string) => dispatch(renameKnowledgeCategory(categoryId, name)),
+    toggleCollapsed: () => dispatch(toggleKnowledgeCategoryCollapsed(categoryId)),
     deleteMe: () => dispatch(deleteKnowledgeCategory(categoryId)),
   };
 }
@@ -121,7 +133,7 @@ class KbCategoryHeader extends ImmerStateComponent<Props, OwnState> {
                onKeyDown={ this.handleKeyDown }
         />
       )
-      : <div>{ name }</div>;
+      : <CategoryTitle>{ name }</CategoryTitle>;
   }
 
   private renderDeleteButton(): React.ReactNode {
@@ -145,10 +157,14 @@ class KbCategoryHeader extends ImmerStateComponent<Props, OwnState> {
   }
 
   public render() {
+    const { category, toggleCollapsed } = this.props;
     const title = this.renderTitle();
     const deleteButton = this.renderDeleteButton();
     return (
       <CategoryHeader>
+        <CollapseSwitch>
+          <Icon type={ category.collapsed ? 'caret-right' : 'caret-down' } onClick={ toggleCollapsed }/>
+        </CollapseSwitch>
         { title }
         <CategoryActions>
           { deleteButton }

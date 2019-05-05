@@ -7098,11 +7098,6 @@ typeface-galdeano@^0.0.71:
   resolved "https://registry.yarnpkg.com/typeface-galdeano/-/typeface-galdeano-0.0.71.tgz#c58a272d048a729ddac4b92e72d968212a2d7e7b"
   integrity sha512-z6N+Xjcgs4ttbdUeY4uTdsg7RzopXF1+/G3ASNFOJrQxZ+v2P32A+n5WZyCxkirE5FQ3me0DDi+8xXk/bjvpeg==
 
-typeface-open-sans@^0.0.54:
-  version "0.0.54"
-  resolved "https://registry.yarnpkg.com/typeface-open-sans/-/typeface-open-sans-0.0.54.tgz#20f5b5ea5c7f95d89dc1f8b2d2b1457680129cee"
-  integrity sha512-w6wOd6EicZdZKf0jSU/K3EzEi3zFgvWQSN7NOpRIQI5KeMWmC5Pg/lqtBVJHB0pRChYRmLdhf4h8ROur0A3JZQ==
-
 typescript@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.2.tgz#9ed4e6475d906f589200193be056f5913caed481"
