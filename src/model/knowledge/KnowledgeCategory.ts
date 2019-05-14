@@ -11,7 +11,7 @@ export function createKnowledgeCategory(gameId: string, name: string): Knowledge
   return {
     id: uuid.v4(),
     gameId,
-    name,
+    name: name.trim(),
     collapsed: false,
   };
 }

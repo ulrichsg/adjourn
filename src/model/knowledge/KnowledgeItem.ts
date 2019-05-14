@@ -14,8 +14,8 @@ export function createKnowledgeItem(categoryId: string, parentId: string | null,
     id: uuid.v4(),
     categoryId,
     parentId,
-    title,
-    content,
+    title: title.trim(),
+    content: content.trim(),
     collapsed: false,
   };
 }

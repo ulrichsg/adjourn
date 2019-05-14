@@ -28,7 +28,7 @@ export default function knowledgeReducer(state: State, action: KnowledgeAction):
       case KnowledgeActionType.RENAME_KNOWLEDGE_CATEGORY:
         [i, category] = findKnowledgeCategoryIndex(draft, action.categoryId);
         if (category) {
-          draft.knowledge.categories[i].name = action.name;
+          draft.knowledge.categories[i].name = action.name.trim();
         }
         break;
       case KnowledgeActionType.DELETE_KNOWLEDGE_CATEGORY:
@@ -57,8 +57,8 @@ export default function knowledgeReducer(state: State, action: KnowledgeAction):
       case KnowledgeActionType.EDIT_KNOWLEDGE_ITEM:
         [i, item] = findKnowledgeItemIndex(draft, action.itemId);
         if (item) {
-          draft.knowledge.items[i].title = action.title;
-          draft.knowledge.items[i].content = action.content;
+          draft.knowledge.items[i].title = action.title.trim();
+          draft.knowledge.items[i].content = action.content.trim();
         }
         break;
     }

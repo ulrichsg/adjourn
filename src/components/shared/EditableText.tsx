@@ -1,5 +1,15 @@
 import { Input } from 'antd';
 import React, { ChangeEvent, KeyboardEvent } from 'react';
+import styled from 'styled-components';
+
+const EditableContent = styled.div`
+  p {
+    margin-bottom: 0.5em;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+`;
 
 interface Props {
   readonly content: string;
@@ -31,8 +41,12 @@ export default class EditableText extends React.Component<Props> {
 
   public render() {
     const { content, editing } = this.props;
+    const displayedContent = content
+      .split('\n')
+      // tslint:disable-next-line:jsx-key
+      .map(paragraph => <p>{ paragraph }</p>);
     return editing
       ? <Input.TextArea value={ content } tabIndex={ 2 } onChange={ this.update } onKeyDown={ this.handleKeyDown }/>
-      : <div>{ content }</div>;
+      : <EditableContent>{ displayedContent }</EditableContent>;
   }
 }

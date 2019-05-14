@@ -28,8 +28,8 @@ export default function questReducer(state: State, action: QuestAction): State {
       case QuestActionType.EDIT_QUEST:
         [i, quest] = findQuestIndex(draft, action.questId);
         if (quest) {
-          draft.quests[i].title = action.title;
-          draft.quests[i].notes = action.notes;
+          draft.quests[i].title = action.title.trim();
+          draft.quests[i].notes = action.notes.trim();
         }
         break;
       case QuestActionType.DELETE_QUEST:
