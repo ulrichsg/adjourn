@@ -19,7 +19,7 @@ interface Props {
   readonly cancel: () => void;
 }
 
-export default class EditableText extends React.Component<Props> {
+export default class EditableText extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
     this.update = this.update.bind(this);

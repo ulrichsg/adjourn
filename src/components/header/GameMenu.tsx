@@ -55,7 +55,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   };
 }
 
-class GameMenu extends React.Component<Props> {
+class GameMenu extends React.Component<Props, {}> {
   public render() {
     const games = this.props.games;
     const currentGame = games.find(game => game.id === this.props.gameId);

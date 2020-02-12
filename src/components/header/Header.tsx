@@ -40,7 +40,7 @@ interface OwnState {
 
 export default class Header extends ImmerStateComponent<{}, OwnState> {
   constructor() {
-    super({});
+    super();
     this.state = { showAddGameModal: false };
     this.openAddGameModal = this.openAddGameModal.bind(this);
     this.closeAddGameModal = this.closeAddGameModal.bind(this);

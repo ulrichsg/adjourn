@@ -38,7 +38,7 @@ interface Props {
   readonly dragHandleProps: DraggableProvidedDragHandleProps | null;
 }
 
-export default class CardHeader extends React.Component<Props> {
+export default class CardHeader extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
     this.update = this.update.bind(this);

@@ -2,7 +2,7 @@ import { Col, Empty, Row } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import State from '../model/State';
+import { State } from '../model';
 import Header from './header/Header';
 import KnowledgeBase from './knowledge/KnowledgeBase';
 import QuestList from './quests/QuestList';
@@ -31,7 +31,7 @@ function mapStateToProps(state: State): StateProps {
   };
 }
 
-class App extends React.Component<StateProps> {
+class App extends React.Component<StateProps, {}> {
   private renderEmptyBody(): React.ReactNode {
     return (
       <EmptyBody image={ Empty.PRESENTED_IMAGE_SIMPLE }

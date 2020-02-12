@@ -27,7 +27,7 @@ function mapStateToProps(state: State, ownProps: OwnProps): StateProps {
   };
 }
 
-class KbCategory extends React.Component<Props> {
+class KbCategory extends React.Component<Props, {}> {
   public render() {
     const { category, items } = this.props;
     return (

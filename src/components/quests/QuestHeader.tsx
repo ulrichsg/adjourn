@@ -36,7 +36,7 @@ function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchPro
   };
 }
 
-class QuestHeader extends React.Component<Props> {
+class QuestHeader extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
   }

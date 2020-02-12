@@ -30,7 +30,7 @@ function mapStateToProps(state: State, ownProps: OwnProps): StateProps {
   return { hasChildren: state.knowledge.items.find(item => item.parentId === ownProps.item.id) !== undefined };
 }
 
-class KbItemContent extends React.Component<Props> {
+class KbItemContent extends React.Component<Props, {}> {
   public render() {
     const { editing, content, updateContent, cancelEditing, submit, hasChildren } = this.props;
     return (

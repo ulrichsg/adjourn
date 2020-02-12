@@ -46,7 +46,7 @@ function mapDispatchToProps(dispatch: Dispatch, ownProps: OwnProps): DispatchPro
   };
 }
 
-class KbItemHeader extends React.Component<Props> {
+class KbItemHeader extends React.Component<Props, {}> {
   public render() {
     const {
       item,

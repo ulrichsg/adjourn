@@ -22,7 +22,7 @@ function mapStateToProps(state: State): StateProps {
   };
 }
 
-class KnowledgeBase extends React.Component<StateProps> {
+class KnowledgeBase extends React.Component<StateProps, {}> {
   public render() {
     const { categories } = this.props;
     return (
@@ -33,7 +33,7 @@ class KnowledgeBase extends React.Component<StateProps> {
         <AddCategoryForm/>
       </React.Fragment>
     );
-  };
+  }
 }
 
 export default connect(mapStateToProps, () => ({}))(KnowledgeBase);
