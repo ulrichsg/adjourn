@@ -1,4 +1,5 @@
 node_modules
+ts-build
 yarn-error.log
 
 .idea/workspace.xml
